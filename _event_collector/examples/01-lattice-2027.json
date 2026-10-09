@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "id": "lattice-2027-nicosia",
+  "revision": 1,
+  "origin": "collected",
+  "facts": {
+    "title": "Lattice 2027",
+    "type": "conference",
+    "start_date": "2027-06-20",
+    "end_date": "2027-06-26",
+    "start_time": null,
+    "end_time": null,
+    "timezone": null,
+    "location": {
+      "venue": null,
+      "city": "Nicosia",
+      "country": "Cyprus"
+    },
+    "attendance": "unknown",
+    "official_url": null,
+    "summary": null,
+    "deadlines": [],
+    "lifecycle": "scheduled"
+  },
+  "sources": [
+    {
+      "id": "latticenews-2026-09-00002",
+      "kind": "announcement",
+      "url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-09/msg00002.html",
+      "posted_at": "2026-09-03T14:44:49Z",
+      "retrieved_at": null,
+      "note": "Manually transcribed from the public announcement inspected on 8 October 2026; organiser-page details not checked."
+    }
+  ],
+  "evidence": [
+    {
+      "field": "/facts/title",
+      "source_id": "latticenews-2026-09-00002",
+      "excerpt": "Lattice 2027"
+    },
+    {
+      "field": "/facts/start_date",
+      "source_id": "latticenews-2026-09-00002",
+      "excerpt": "20–26 June 2027"
+    },
+    {
+      "field": "/facts/end_date",
+      "source_id": "latticenews-2026-09-00002",
+      "excerpt": "20–26 June 2027"
+    },
+    {
+      "field": "/facts/location/city",
+      "source_id": "latticenews-2026-09-00002",
+      "excerpt": "Nicosia, Cyprus"
+    },
+    {
+      "field": "/facts/location/country",
+      "source_id": "latticenews-2026-09-00002",
+      "excerpt": "Nicosia, Cyprus"
+    }
+  ],
+  "related_events": [
+    {
+      "id": "lattice-practices-2027",
+      "relation": "has_satellite"
+    },
+    {
+      "id": "spectral-densities-flavor-2027",
+      "relation": "has_satellite"
+    }
+  ],
+  "identity_aliases": [
+    "latticenews:https://list.iu.edu/sympa/arc/latticenews-l/2026-09/msg00002.html#event:lattice-2027-nicosia"
+  ],
+  "warnings": [
+    "Official event URL not available in the inspected message rendering; verify before approval."
+  ],
+  "editor_overrides": [],
+  "decision": {
+    "status": "pending",
+    "reviewed_revision": null,
+    "reason": null,
+    "acknowledged_warnings": []
+  },
+  "history": []
+}

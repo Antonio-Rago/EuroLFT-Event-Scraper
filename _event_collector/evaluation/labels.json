@@ -1,0 +1,4795 @@
+{
+  "schema_version": 1,
+  "corpus_id": "latticenews-2026-apr-oct-v1",
+  "created_on": "2026-10-08",
+  "annotator": "Codex source-read draft; original labels created before extraction API calls",
+  "annotation_status": "draft_for_editor_review",
+  "policy": {
+    "lattice_courses": "include",
+    "broad_quantum_computing": "review",
+    "all_publication": "human_PR_review"
+  },
+  "cases": [
+    {
+      "case_id": "real-01",
+      "basis": "real",
+      "group": "gpd-2026",
+      "split": "held_out",
+      "source_id": "latticenews-24223d07542e2782345849ea",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-04/msg00000.html",
+      "source_content_sha256": "8975bf9ff10d69ec32b0e239c112771069f16feb6b1cb643c4b8e24def2df3a8",
+      "input_sha256": "ea16a393989e3d2ede4d9c5983b1e41a2a2a3371c8de27fc84a39fc6505108ee",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "plain_url",
+        "lattice_phenomenology"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "gpd-2026",
+            "accepted_title_aliases": [
+              "Hadron Imaging with GPDs: High-Precision Global Analysis and Lattice QCD"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "Hadron Imaging with GPDs: High-Precision Global Analysis and Lattice QCD",
+              "type": "workshop",
+              "start_date": "2026-06-15",
+              "end_date": "2026-06-19",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": "ECT*",
+                "city": "Trento",
+                "country": "Italy"
+              },
+              "attendance": "unknown",
+              "official_url": "https://indico.ectstar.eu/event/266/",
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [],
+            "notes": [],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 75,
+                "end": 147,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 177,
+                "end": 198,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 199,
+                "end": 221,
+                "supports": [
+                  "/facts/location/venue",
+                  "/facts/location/city",
+                  "/facts/location/country"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 225,
+                "end": 261,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-02",
+      "basis": "real",
+      "group": "dtp-talent-2026",
+      "split": "held_out",
+      "source_id": "latticenews-8ffb7a4850031cf0136115ed",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-04/msg00001.html",
+      "source_content_sha256": "8e6bfd702ac2306c825783cf26eac063e39d55a70e08a88531a2ad21d4746de5",
+      "input_sha256": "5f05576b19b02392e41121eeec5e474df294d2654cc08f06062e95b5b0312685",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "forwarded",
+        "missing_link",
+        "school",
+        "deadline"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "dtp-talent-2026",
+            "accepted_title_aliases": [
+              "DTP-TALENT 2026: Nuclear Theory for New Physics",
+              "DTP-TALENT 2026",
+              "Nuclear Theory for New Physics"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "DTP-TALENT 2026: Nuclear Theory for New Physics",
+              "type": "school",
+              "start_date": "2026-07-13",
+              "end_date": "2026-07-31",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": "ECT*",
+                "city": "Trento",
+                "country": "Italy"
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "registration",
+                  "label": "Registration",
+                  "date": "2026-05-08",
+                  "time": null,
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "missing_official_url",
+              "relative_funding_rule"
+            ],
+            "notes": [
+              "Do not turn the overlap reference to Lattice 2026 into another event. EUSTIPEN has a relative funding rule; no fabricated fixed funding date."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 792,
+                "end": 822,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 124,
+                "end": 141,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 101,
+                "end": 122,
+                "supports": [
+                  "/facts/location/venue",
+                  "/facts/location/city",
+                  "/facts/location/country"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 403,
+                "end": 439,
+                "supports": [
+                  "/facts/deadlines/0/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-03",
+      "basis": "real",
+      "group": "aqtivate-2026",
+      "split": "development",
+      "source_id": "latticenews-a3b38d815d173616b4ced3c1",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-04/msg00002.html",
+      "source_content_sha256": "567cdfe81c358daef381975dea22ecac973ce7467bfc7b09ed1bb58319ff57d1",
+      "input_sha256": "82c8841477170ff7db6ae8dc1eda0d8e14307101fdfb3ec9a5d81ff7de235fed",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "cross_month_dates",
+        "methods",
+        "multiple_deadlines"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "aqtivate-2026",
+            "accepted_title_aliases": [
+              "AQTIVATE conference on high performance computing, machine learning and quantum computing",
+              "AQTIVATE conference",
+              "AQTIVATE 2026"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "AQTIVATE conference on high performance computing, machine learning and quantum computing",
+              "type": "conference",
+              "start_date": "2026-09-28",
+              "end_date": "2026-10-02",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": "Larnaca",
+                "country": "Cyprus"
+              },
+              "attendance": "unknown",
+              "official_url": "https://indico.global/event/16668/",
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "abstract",
+                  "label": "Poster abstract",
+                  "date": "2026-07-31",
+                  "time": null,
+                  "timezone": null
+                },
+                {
+                  "kind": "registration",
+                  "label": "Registration",
+                  "date": "2026-08-30",
+                  "time": null,
+                  "timezone": null
+                },
+                {
+                  "kind": "other",
+                  "label": "Venue room availability",
+                  "date": "2026-07-17",
+                  "time": null,
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [],
+            "notes": [
+              "Explicit lattice QCD applications justify inclusion. Accommodation availability is not a registration deadline."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 68,
+                "end": 87,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 485,
+                "end": 516,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 517,
+                "end": 535,
+                "supports": [
+                  "/facts/location/city",
+                  "/facts/location/country"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 546,
+                "end": 580,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              },
+              {
+                "source_field": "body",
+                "start": 1508,
+                "end": 1539,
+                "supports": [
+                  "/facts/deadlines/0/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1576,
+                "end": 1622,
+                "supports": [
+                  "/facts/deadlines/1/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1901,
+                "end": 1931,
+                "supports": [
+                  "/facts/deadlines/2/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/location/venue",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-04",
+      "basis": "real",
+      "group": "lund-positions",
+      "split": "held_out",
+      "source_id": "latticenews-dd2465cc4b30440dac390469",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-04/msg00003.html",
+      "source_content_sha256": "6d71f303a4eebdea59f2a462c7f5fa440716811069e78e17f45110d0250665d3",
+      "input_sha256": "e2de8bbc1f323fd13d403a3f533053db44f8f0b14c5f7af9559d7b9702924ea9",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "job",
+        "signature_location"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Job advertisement, not an event.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 20,
+            "end": 38,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-05",
+      "basis": "real",
+      "group": "xqcd-2026",
+      "split": "held_out",
+      "source_id": "latticenews-b8900193ad615cfe95dda12f",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-04/msg00004.html",
+      "source_content_sha256": "746149f9241a09fbb8799904085b46e2f2026977d0094ff883258f6579f28926",
+      "input_sha256": "b1315fde829f202ae91e24469b8e0c033125a58765df6f0657675d4fc158e7ec",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "multiple_events",
+        "attachment_reference",
+        "multiple_deadlines"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "xqcd-2026",
+            "accepted_title_aliases": [
+              "xQCD 2026",
+              "xQCD 2026 Conference"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "xQCD 2026",
+              "type": "conference",
+              "start_date": "2026-07-14",
+              "end_date": "2026-07-17",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": "Pukyong National University (PKNU)",
+                "city": "Busan",
+                "country": "Republic of Korea"
+              },
+              "attendance": "unknown",
+              "official_url": "https://indico.ibs.re.kr/event/1158/",
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "abstract",
+                  "label": "Abstract submission",
+                  "date": "2026-05-14",
+                  "time": null,
+                  "timezone": null
+                },
+                {
+                  "kind": "registration",
+                  "label": "Registration",
+                  "date": "2026-05-28",
+                  "time": null,
+                  "timezone": null
+                },
+                {
+                  "kind": "payment",
+                  "label": "Registration fee payment",
+                  "date": "2026-06-12",
+                  "time": null,
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [],
+            "notes": [
+              "Main conference deadlines; school applicability is not asserted. Do not download the attachment for this evaluation."
+            ],
+            "related_events": [
+              {
+                "event_key": "xqcd-school-2026",
+                "relation": "has_satellite"
+              }
+            ],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 323,
+                "end": 343,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 345,
+                "end": 360,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 183,
+                "end": 243,
+                "supports": [
+                  "/facts/location/venue",
+                  "/facts/location/city",
+                  "/facts/location/country"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 634,
+                "end": 670,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              },
+              {
+                "source_field": "body",
+                "start": 1150,
+                "end": 1191,
+                "supports": [
+                  "/facts/deadlines/0/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1199,
+                "end": 1233,
+                "supports": [
+                  "/facts/deadlines/1/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1241,
+                "end": 1288,
+                "supports": [
+                  "/facts/deadlines/2/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/attendance"
+            ]
+          },
+          {
+            "event_key": "xqcd-school-2026",
+            "accepted_title_aliases": [
+              "xQCD 2026 PhD School"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "xQCD 2026 PhD School",
+              "type": "school",
+              "start_date": "2026-07-12",
+              "end_date": "2026-07-13",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": "Pukyong National University (PKNU)",
+                "city": "Busan",
+                "country": "Republic of Korea"
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "missing_official_url",
+              "deadline_scope_uncertain"
+            ],
+            "notes": [
+              "The introductory shared venue applies to the explicitly following school/conference schedule. No separate school URL stated."
+            ],
+            "related_events": [
+              {
+                "event_key": "xqcd-2026",
+                "relation": "satellite_of"
+              }
+            ],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 285,
+                "end": 305,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 307,
+                "end": 322,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 183,
+                "end": 243,
+                "supports": [
+                  "/facts/location/venue",
+                  "/facts/location/city",
+                  "/facts/location/country"
+                ],
+                "derivation": null
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-06",
+      "basis": "real",
+      "group": "sewm-2026",
+      "split": "development",
+      "source_id": "latticenews-b9431a730f8a550632fbaef8",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-04/msg00005.html",
+      "source_content_sha256": "187024e288530dc90c3219ba604fdb2cdcab711e561fd717307dddaa43484e7a",
+      "input_sha256": "e9f5a1a401b82d045671448a5bc73fbb5881d2faefa582c9528cee9e452a45d7",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "broad_scope",
+        "deadline",
+        "reminder"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "sewm-2026",
+            "accepted_title_aliases": [
+              "Strong and Electroweak Matter 2026",
+              "SEWM26"
+            ],
+            "message_role": "update",
+            "relevance": "review",
+            "facts": {
+              "title": "Strong and Electroweak Matter 2026",
+              "type": "conference",
+              "start_date": "2026-08-17",
+              "end_date": "2026-08-21",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": "University of Helsinki Main Building",
+                "city": "Helsinki",
+                "country": "Finland"
+              },
+              "attendance": "unknown",
+              "official_url": "https://indico.global/event/14246/overview",
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "abstract",
+                  "label": "Abstract submission",
+                  "date": "2026-05-25",
+                  "time": "23:59",
+                  "timezone": null
+                },
+                {
+                  "kind": "registration",
+                  "label": "Registration",
+                  "date": "2026-06-07",
+                  "time": null,
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "scope_review",
+              "timezone_mapping"
+            ],
+            "notes": [
+              "Main Building is explicit elsewhere in the same message. EEST is preserved as a timezone uncertainty, not an invented IANA zone. Ordinal differs in the later circular; identity should use the same venue/dates/Indico event."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 78,
+                "end": 114,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 132,
+                "end": 149,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 157,
+                "end": 202,
+                "supports": [
+                  "/facts/location/venue",
+                  "/facts/location/city",
+                  "/facts/location/country"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 406,
+                "end": 448,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              },
+              {
+                "source_field": "body",
+                "start": 1784,
+                "end": 1813,
+                "supports": [
+                  "/facts/deadlines/0/date",
+                  "/facts/deadlines/0/time"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1817,
+                "end": 1852,
+                "supports": [
+                  "/facts/deadlines/1/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 245,
+                "end": 281,
+                "supports": [
+                  "/facts/location/venue"
+                ],
+                "derivation": null
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-07",
+      "basis": "real",
+      "group": "wilson-award",
+      "split": "development",
+      "source_id": "latticenews-a419fe52eef557a20d0c10dd",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-05/msg00000.html",
+      "source_content_sha256": "76053d3561046483d2489b714978f50d4bf3a44177e3fbe73fc04941b3fd08a5",
+      "input_sha256": "9ce18117dd7a000fbc5b8ad983e0cf323b35699ef9176474f40f76e39e9d496e",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "award",
+        "attachments",
+        "incidental_parent_mention"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Award nomination call; no conference candidate.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 30,
+            "end": 82,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-08",
+      "basis": "real",
+      "group": "ldic-survey",
+      "split": "held_out",
+      "source_id": "latticenews-ce85e464c2e16dae20264a45",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-05/msg00001.html",
+      "source_content_sha256": "05418f1d20454b2ee1b5161d5c64f627ae2f361ece6f8a291b1b95c5c3b39636",
+      "input_sha256": "040563fa9de37280ed2e95fb704c3f35755ae8af198ecf75c8ccb013a6eae960",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "survey",
+        "missing_link"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Survey participation request, not an event.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 76,
+            "end": 97,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-09",
+      "basis": "real",
+      "group": "ldic-survey",
+      "split": "held_out",
+      "source_id": "latticenews-b914907a672e05ae672d6138",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-05/msg00002.html",
+      "source_content_sha256": "4d23f28c45dfefa62be87ad3af1a0dbd2895b43873f64a9f7c283e7cd91a8912",
+      "input_sha256": "0899d9614581d86b10df48a8ebcc5a861b5970b8a27488fbecf88e1ca1528fdf",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "reply",
+        "quoted_message",
+        "survey"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Reply to survey request; quoted original does not create an event.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 0,
+            "end": 33,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-10",
+      "basis": "real",
+      "group": "xqcd-2026",
+      "split": "held_out",
+      "source_id": "latticenews-14d20118d7c6e7e91701bf0a",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-05/msg00003.html",
+      "source_content_sha256": "ef825e909f4868e87e619da80a8d227ea3f19fa9d7ba52b8b139b87212afc7c4",
+      "input_sha256": "8d08045efcf592b920eca520097b5f9d4fdb175e2029be093cadb7d81a3bac9b",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "deadline_extension",
+        "multiple_events",
+        "plain_url"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "xqcd-2026",
+            "accepted_title_aliases": [
+              "xQCD 2026",
+              "xQCD Conference",
+              "xQCD 2026 Conference"
+            ],
+            "message_role": "update",
+            "relevance": "include",
+            "facts": {
+              "title": "xQCD 2026",
+              "type": "conference",
+              "start_date": "2026-07-14",
+              "end_date": "2026-07-17",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": "Busan",
+                "country": "Korea"
+              },
+              "attendance": "unknown",
+              "official_url": "https://indico.ibs.re.kr/event/1158",
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "abstract",
+                  "label": "Abstract submission",
+                  "date": "2026-05-28",
+                  "time": null,
+                  "timezone": null
+                },
+                {
+                  "kind": "registration",
+                  "label": "Registration",
+                  "date": "2026-05-28",
+                  "time": null,
+                  "timezone": null
+                },
+                {
+                  "kind": "payment",
+                  "label": "Registration fee payment",
+                  "date": "2026-06-12",
+                  "time": null,
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [],
+            "notes": [
+              "Updated abstract deadline replaces 14 May; same event, not a new edition."
+            ],
+            "related_events": [
+              {
+                "event_key": "xqcd-school-2026",
+                "relation": "has_satellite"
+              }
+            ],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 342,
+                "end": 357,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 359,
+                "end": 374,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 711,
+                "end": 726,
+                "supports": [
+                  "/facts/location/city",
+                  "/facts/location/country"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 599,
+                "end": 634,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              },
+              {
+                "source_field": "body",
+                "start": 107,
+                "end": 130,
+                "supports": [
+                  "/facts/deadlines/0/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 416,
+                "end": 450,
+                "supports": [
+                  "/facts/deadlines/1/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 507,
+                "end": 554,
+                "supports": [
+                  "/facts/deadlines/2/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/location/venue",
+              "/facts/attendance"
+            ]
+          },
+          {
+            "event_key": "xqcd-school-2026",
+            "accepted_title_aliases": [
+              "xQCD 2026 PhD School",
+              "xQCD 2026 Ph.D School"
+            ],
+            "message_role": "reminder",
+            "relevance": "include",
+            "facts": {
+              "title": "xQCD 2026 PhD School",
+              "type": "school",
+              "start_date": "2026-07-12",
+              "end_date": "2026-07-13",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "missing_official_url",
+              "location_not_explicit_for_school"
+            ],
+            "notes": [
+              "Do not carry the earlier shared venue into this independent input."
+            ],
+            "related_events": [
+              {
+                "event_key": "xqcd-2026",
+                "relation": "satellite_of"
+              }
+            ],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 376,
+                "end": 397,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 399,
+                "end": 414,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/location/venue",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-11",
+      "basis": "real",
+      "group": "lattice-2026",
+      "split": "development",
+      "source_id": "latticenews-2baf587d0ac6347c6b4535a4",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-05/msg00004.html",
+      "source_content_sha256": "6ab5a00cc0cadc955b2d21437af58d6e586e779e664504cdbcd6a7731c136cef",
+      "input_sha256": "530d93f0441a5636467858a4fad636ecb9a4dfa06b311e25ae5e046d178dfe0f",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "incomplete_dates",
+        "parent_update",
+        "past_deadline",
+        "multiple_deadlines"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "lattice-2026",
+            "accepted_title_aliases": [
+              "Lattice 2026",
+              "Lattice 2026 Maryland",
+              "43rd International Symposium on Lattice Field Theory"
+            ],
+            "message_role": "update",
+            "relevance": "include",
+            "facts": {
+              "title": "Lattice 2026",
+              "type": "conference",
+              "start_date": null,
+              "end_date": null,
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": "https://indico.global/event/16565/abstracts/",
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "abstract",
+                  "label": "Abstract submission",
+                  "date": "2026-06-29",
+                  "time": "23:59",
+                  "timezone": null
+                },
+                {
+                  "kind": "registration",
+                  "label": "Early-bird registration",
+                  "date": "2026-03-20",
+                  "time": "23:59",
+                  "timezone": null
+                },
+                {
+                  "kind": "registration",
+                  "label": "General registration",
+                  "date": "2026-06-29",
+                  "time": "23:59",
+                  "timezone": null
+                },
+                {
+                  "kind": "registration",
+                  "label": "Late registration",
+                  "date": "2026-07-09",
+                  "time": "23:59",
+                  "timezone": null
+                },
+                {
+                  "kind": "other",
+                  "label": "Refund cancellation",
+                  "date": "2026-07-09",
+                  "time": "23:59",
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "missing_event_dates",
+              "timezone_mapping",
+              "location_state_only"
+            ],
+            "notes": [
+              "Maryland is a region, not an explicitly supplied city. The abstracts page is an explicit organiser event URL. Wilson Award nominations are not a separate event or abstract deadline."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 128,
+                "end": 140,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 369,
+                "end": 413,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              },
+              {
+                "source_field": "body",
+                "start": 293,
+                "end": 321,
+                "supports": [
+                  "/facts/deadlines/0/date",
+                  "/facts/deadlines/0/time"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1149,
+                "end": 1208,
+                "supports": [
+                  "/facts/deadlines/1/date",
+                  "/facts/deadlines/1/time"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1213,
+                "end": 1268,
+                "supports": [
+                  "/facts/deadlines/2/date",
+                  "/facts/deadlines/2/time"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1273,
+                "end": 1324,
+                "supports": [
+                  "/facts/deadlines/3/date",
+                  "/facts/deadlines/3/time"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1413,
+                "end": 1481,
+                "supports": [
+                  "/facts/deadlines/4/date",
+                  "/facts/deadlines/4/time"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_date",
+              "/facts/end_date",
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/location/venue",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-12",
+      "basis": "real",
+      "group": "ccp-2026",
+      "split": "held_out",
+      "source_id": "latticenews-59191d96b789bdd459770882",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-05/msg00005.html",
+      "source_content_sha256": "26d6636a252c7a7fefc5eb9899901ea993d263affe8d7b510992a8572d5a4591",
+      "input_sha256": "f13a177a0e0f34bfd372c1d9ea8b99b2c4a6b46b55a41d8f4fcb325b76b1c9b4",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "explicit_lattice_track",
+        "deadline",
+        "plain_url"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "ccp-2026",
+            "accepted_title_aliases": [
+              "37th IUPAP Conference on Computational Physics (CCP2026)",
+              "CCP2026",
+              "XXXVII IUPAP Conference on Computational Physics"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "37th IUPAP Conference on Computational Physics (CCP2026)",
+              "type": "conference",
+              "start_date": "2026-08-09",
+              "end_date": "2026-08-14",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": "Sejong University Convention Center",
+                "city": "Seoul",
+                "country": "Korea"
+              },
+              "attendance": "unknown",
+              "official_url": "https://ccp2026.kr/index.php",
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "abstract",
+                  "label": "Abstract submission",
+                  "date": "2026-05-26",
+                  "time": null,
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [],
+            "notes": [
+              "Explicit Lattice Field Theory subdivision supports inclusion despite a broad computational-physics programme."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 56,
+                "end": 114,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 140,
+                "end": 158,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 167,
+                "end": 218,
+                "supports": [
+                  "/facts/location/venue",
+                  "/facts/location/city",
+                  "/facts/location/country"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 221,
+                "end": 249,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              },
+              {
+                "source_field": "body",
+                "start": 340,
+                "end": 352,
+                "supports": [
+                  "/facts/deadlines/0/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-13",
+      "basis": "real",
+      "group": "wilson-award",
+      "split": "development",
+      "source_id": "latticenews-5d96c49cdcc164de59ee55eb",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-05/msg00006.html",
+      "source_content_sha256": "cdb4be676ba3c2391de9aa110babfa5f21a1f120354d3f340ceb4cce65bc4ebd",
+      "input_sha256": "1f1de6da8635615f9d786157c70ef9196557b1449efee90abfd77ef1687e3602",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "award",
+        "reminder",
+        "attachments"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Award nomination reminder; nomination date is not an event date.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 43,
+            "end": 94,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-14",
+      "basis": "real",
+      "group": "plenary-input",
+      "split": "development",
+      "source_id": "latticenews-fc12ed194bb0e6b836e5498d",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-06/msg00000.html",
+      "source_content_sha256": "5c9b854c6c4392a73ffca010ae86963a532c00eb41e11222e2d241900eef0c02",
+      "input_sha256": "f7bd08362209e3af734ea82e6ca7e65db787d1478bf6deb5075ba6e2f9606e18",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "plenary_request",
+        "multiple_incidental_events",
+        "relative_date"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Request for research material for plenary talks, not an event announcement.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 369,
+            "end": 421,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-15",
+      "basis": "real",
+      "group": "sewm-2026",
+      "split": "development",
+      "source_id": "latticenews-8fd9c6f7ea50998f497c19c8",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-06/msg00001.html",
+      "source_content_sha256": "76f8b99632c73e6f1548fa15629e364c5567e8e85ef8c4f621c28de8cf4f8a05",
+      "input_sha256": "f89b6d3ee6134277e878f8174f9cb165e4fb7a25099bd5baea695aa0428b94e8",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "deadline_extension",
+        "broad_scope",
+        "parent_update"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "sewm-2026",
+            "accepted_title_aliases": [
+              "Strong and Electroweak Matter 2026",
+              "SEWM26"
+            ],
+            "message_role": "update",
+            "relevance": "review",
+            "facts": {
+              "title": "Strong and Electroweak Matter 2026",
+              "type": "conference",
+              "start_date": "2026-08-17",
+              "end_date": "2026-08-21",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": "University of Helsinki",
+                "city": "Helsinki",
+                "country": "Finland"
+              },
+              "attendance": "unknown",
+              "official_url": "https://indico.global/event/14246/registrations/4073/",
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "registration",
+                  "label": "Registration",
+                  "date": "2026-06-14",
+                  "time": null,
+                  "timezone": null
+                },
+                {
+                  "kind": "payment",
+                  "label": "Registration fee payment",
+                  "date": "2026-06-14",
+                  "time": null,
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "scope_review"
+            ],
+            "notes": [
+              "Registration extension supersedes 7 June; this message explicitly applies 14 June to payment too. Ordinal XVI/XVII conflicts with previous circular; canonical title omits that ordinal."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 90,
+                "end": 126,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 164,
+                "end": 183,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 191,
+                "end": 232,
+                "supports": [
+                  "/facts/location/venue",
+                  "/facts/location/city",
+                  "/facts/location/country"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 576,
+                "end": 629,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              },
+              {
+                "source_field": "body",
+                "start": 460,
+                "end": 515,
+                "supports": [
+                  "/facts/deadlines/0/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 460,
+                "end": 515,
+                "supports": [
+                  "/facts/deadlines/1/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-16",
+      "basis": "real",
+      "group": "lattice-2026",
+      "split": "development",
+      "source_id": "latticenews-56fd56bbca7c4acb6cedeff1",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-06/msg00002.html",
+      "source_content_sha256": "0a0efef852bd7fe5a62ee3affc946de0770bc742aa7bfc0630049c5e3f441e01",
+      "input_sha256": "1a7292178396424252c608bee2c71c890d18c6f9ff34ecb83a5eeb2aceaf9713",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "parent_update",
+        "mentoring",
+        "contact_distractors"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "lattice-2026",
+            "accepted_title_aliases": [
+              "Lattice 2026",
+              "Lattice 2026 conference"
+            ],
+            "message_role": "update",
+            "relevance": "include",
+            "facts": {
+              "title": "Lattice 2026",
+              "type": "conference",
+              "start_date": "2026-07-26",
+              "end_date": "2026-08-01",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": "University of Maryland",
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "other",
+                  "label": "Mentoring participation response",
+                  "date": "2026-06-19",
+                  "time": null,
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "missing_official_url"
+            ],
+            "notes": [
+              "Mentoring is parent-conference information; no independently timed mentoring workshop is stated. Colorado College in the signature is not the event venue."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 140,
+                "end": 152,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 196,
+                "end": 221,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 172,
+                "end": 194,
+                "supports": [
+                  "/facts/location/venue"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 1991,
+                "end": 2011,
+                "supports": [
+                  "/facts/deadlines/0/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-17",
+      "basis": "real",
+      "group": "plenary-input",
+      "split": "development",
+      "source_id": "latticenews-056de0065e49a07a437457ea",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-06/msg00003.html",
+      "source_content_sha256": "c52f2685170c8f22b744e6cc30d012ecd8fa23153774527a7defe8a7615fbf3b",
+      "input_sha256": "92316d94738c6c0252bbc3e6cd5594aa9e50578a0826ad45926650cf993e38fe",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "plenary_request",
+        "signature_location"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Request for plenary research input, not an independent event.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 268,
+            "end": 300,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-18",
+      "basis": "real",
+      "group": "southampton-fellowships",
+      "split": "development",
+      "source_id": "latticenews-9877bf379f33eb5cb555be34",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-06/msg00004.html",
+      "source_content_sha256": "09ea1ed9e9707de20f07bc7f7c57ec8f94b8c97be97509e1244260d0f6999853",
+      "input_sha256": "7c2a4d23bf2ab32a67ddef3e9f033de61aa44c064b0b20a2913c72f488459c21",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "job",
+        "multiple_application_deadlines"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Fellowship application request, not an event.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 148,
+            "end": 201,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-19",
+      "basis": "real",
+      "group": "nuqai-2026",
+      "split": "development",
+      "source_id": "latticenews-de9a093a68581b91a68792e6",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-06/msg00005.html",
+      "source_content_sha256": "b07e17def16340e694f30df89598c73e5b2b8351a2841b49d6de2782b677f942",
+      "input_sha256": "8c25f596df0a7ead6e2ba749cde7a9625e16bb8f6f8710f8510bf8dce119c95f",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "broad_scope",
+        "cryptographic_attachment"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "nuqai-2026",
+            "accepted_title_aliases": [
+              "Nuclear Physics at the Quantum-AI Frontier (NuQAI 2026)",
+              "NuQAI 2026"
+            ],
+            "message_role": "announcement",
+            "relevance": "review",
+            "facts": {
+              "title": "Nuclear Physics at the Quantum-AI Frontier (NuQAI 2026)",
+              "type": "workshop",
+              "start_date": "2026-08-03",
+              "end_date": "2026-08-04",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": "MIT",
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": "https://indico.mit.edu/event/2177/",
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "scope_review"
+            ],
+            "notes": [
+              "Nuclear/high-energy computing relevance is stated, but lattice/gauge-specific content is not explicit. MIT does not by itself supply an explicitly stated city/country. S/MIME attachment is not an event."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 50,
+                "end": 92,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 142,
+                "end": 158,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 132,
+                "end": 138,
+                "supports": [
+                  "/facts/location/venue"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 976,
+                "end": 1010,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-20",
+      "basis": "real",
+      "group": "xqcd-host-2027",
+      "split": "held_out",
+      "source_id": "latticenews-0d166d40a8a8793a9d7480ee",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-06/msg00006.html",
+      "source_content_sha256": "77dc0b6fb57d1986d804e388c2ab85fcc756be413b05004770ff55d435e8f6fc",
+      "input_sha256": "c18f4c8168488071f8a590be07df1ef9d582bc244cdf0370feb9c310a0f759fc",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "hosting_call",
+        "unconfirmed_event",
+        "tentative_private_meeting"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Call to host an unconfirmed future edition; host application/evaluation dates are not conference dates.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 100,
+            "end": 162,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-21",
+      "basis": "real",
+      "group": "lattice-host-2028",
+      "split": "development",
+      "source_id": "latticenews-72f400778e71ddf3134a7562",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-06/msg00007.html",
+      "source_content_sha256": "062e1388e35c3517ce3057f681110745fdf74769bcd5b1095c8c678b78a1b896",
+      "input_sha256": "4e8a1f4cde912b756987732371374bae8db6bc13338bd6cb289cefe3a5876378",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "hosting_call",
+        "incidental_other_editions"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Hosting expressions of interest; incidental previous/next-edition mentions are not new candidates.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 92,
+            "end": 126,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-22",
+      "basis": "real",
+      "group": "plenary-input",
+      "split": "development",
+      "source_id": "latticenews-69f18ba2b08a9319b4ca27ff",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-06/msg00008.html",
+      "source_content_sha256": "48dd4e7d219fb454dd038ce87503854d92490760eed54d2ed3b2ea92789a932f",
+      "input_sha256": "f7a9e1080361671435e36de5875070131156bc859a8ed36118d55283ee1cdc42",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "plenary_request",
+        "signature_location"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Request for figures for a plenary talk, not an event.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 230,
+            "end": 264,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-23",
+      "basis": "real",
+      "group": "plenary-input",
+      "split": "development",
+      "source_id": "latticenews-1a0b2bbd9f298a8ce787bf32",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-06/msg00009.html",
+      "source_content_sha256": "8137ae921a7e49f64659acc15cd3e76e36666b601f4ae2df6fc69b3aa1b3628d",
+      "input_sha256": "551a11184550e31fa51d84284accbd59d9b4ccb3216a38fb9b85cfc96b89fcac",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "plenary_request",
+        "signature_location"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Request for input to a plenary, not an event.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 271,
+            "end": 319,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-24",
+      "basis": "real",
+      "group": "lattice-2026",
+      "split": "development",
+      "source_id": "latticenews-af284baf64c6fb2f4df5ea7a",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-06/msg00010.html",
+      "source_content_sha256": "449c69e8181dcb4251edc79bca231f685bd889f4af17a7362e7223bde6ad1822",
+      "input_sha256": "d56e631401c7434c33350e3981df79a812f81d24d3a3ddc25292c763d80aab23",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "parent_update",
+        "mentoring",
+        "deadline_extension"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "lattice-2026",
+            "accepted_title_aliases": [
+              "Lattice 2026",
+              "Lattice 2026 conference"
+            ],
+            "message_role": "update",
+            "relevance": "include",
+            "facts": {
+              "title": "Lattice 2026",
+              "type": "conference",
+              "start_date": "2026-07-26",
+              "end_date": "2026-08-01",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": "University of Maryland",
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "other",
+                  "label": "Mentoring participation response",
+                  "date": "2026-07-03",
+                  "time": null,
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "missing_official_url"
+            ],
+            "notes": [
+              "Mentoring response deadline changes from 19 June to 3 July; no new calendar event."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 139,
+                "end": 151,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 195,
+                "end": 220,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 171,
+                "end": 193,
+                "supports": [
+                  "/facts/location/venue"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 1976,
+                "end": 1995,
+                "supports": [
+                  "/facts/deadlines/0/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-25",
+      "basis": "real",
+      "group": "lattice-2026",
+      "split": "development",
+      "source_id": "latticenews-b348a22575fc65ef92ac7b43",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-06/msg00011.html",
+      "source_content_sha256": "e9e2b8108a3698bc02ff13770228bbbfde542a38feae4b04043284775c4d58af",
+      "input_sha256": "efa13bd1496c19cd5d8559e66825bba515fa0146b06f29548b33d9d751e16a4e",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "incomplete_dates",
+        "parent_update",
+        "multiple_deadlines"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "lattice-2026",
+            "accepted_title_aliases": [
+              "Lattice 2026",
+              "43rd Lattice Field Theory Symposium"
+            ],
+            "message_role": "reminder",
+            "relevance": "include",
+            "facts": {
+              "title": "Lattice 2026",
+              "type": "conference",
+              "start_date": null,
+              "end_date": null,
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "abstract",
+                  "label": "Abstract submission",
+                  "date": "2026-06-29",
+                  "time": "23:59",
+                  "timezone": null
+                },
+                {
+                  "kind": "registration",
+                  "label": "General registration",
+                  "date": "2026-06-29",
+                  "time": "23:59",
+                  "timezone": null
+                },
+                {
+                  "kind": "registration",
+                  "label": "Late registration",
+                  "date": "2026-07-09",
+                  "time": null,
+                  "timezone": null
+                },
+                {
+                  "kind": "other",
+                  "label": "Mentoring participation response",
+                  "date": "2026-07-03",
+                  "time": null,
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "missing_event_dates",
+              "missing_official_url",
+              "timezone_mapping"
+            ],
+            "notes": [
+              "A month from the message date is not an exact event date. No specific late-registration clock supplied here."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 163,
+                "end": 175,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 184,
+                "end": 234,
+                "supports": [
+                  "/facts/deadlines/0/date",
+                  "/facts/deadlines/0/time"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 184,
+                "end": 234,
+                "supports": [
+                  "/facts/deadlines/1/date",
+                  "/facts/deadlines/1/time"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 372,
+                "end": 390,
+                "supports": [
+                  "/facts/deadlines/2/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1038,
+                "end": 1053,
+                "supports": [
+                  "/facts/deadlines/3/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_date",
+              "/facts/end_date",
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/location/venue",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-26",
+      "basis": "real",
+      "group": "plenary-input",
+      "split": "development",
+      "source_id": "latticenews-11c186675787015e784ef89f",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-07/msg00000.html",
+      "source_content_sha256": "c04a029c187ec9739d3fb477fbd27b2ecaa769877189b4be12aac03a26a7f757",
+      "input_sha256": "2ece59d51830afbb1986a7b4f7769c03978448e13f4409cc26a2c4ea820d65fb",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "plenary_request"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Plenary input request/reply, not an independently announced calendar event.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 193,
+            "end": 227,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-27",
+      "basis": "real",
+      "group": "plenary-input",
+      "split": "development",
+      "source_id": "latticenews-4780e7bec9c13faa85d10a5f",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-07/msg00001.html",
+      "source_content_sha256": "fe2c7c9abe6511135b787fd330ae0c8c2fc2cc3eabe9ec067250d777aa00ffdf",
+      "input_sha256": "b1b826d85b13d2fa42942e52f910c6b7ba2423fb344858a545442d172b67746c",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "plenary_request"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Plenary input request/reply, not an independently announced calendar event.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 175,
+            "end": 204,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-28",
+      "basis": "real",
+      "group": "plenary-input",
+      "split": "development",
+      "source_id": "latticenews-2b620f24d5f1db96ce8f0c0e",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-07/msg00003.html",
+      "source_content_sha256": "1fa7751c54c59b44bd8b8a845bc6521b18720b94cd6d0ef7e67976113a34466f",
+      "input_sha256": "5e881e874bf7880934ce9a5ce85443ab88f5871a59dd46f56bf898d6761dcdf5",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "plenary_request"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Plenary input request/reply, not an independently announced calendar event.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 295,
+            "end": 342,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-29",
+      "basis": "real",
+      "group": "plenary-input",
+      "split": "development",
+      "source_id": "latticenews-1fb3f3bd35f098faeb0d9fd7",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-07/msg00004.html",
+      "source_content_sha256": "1469d1eed38d9a6725e489cec19508bb5b28810c5525e623945f67736465f241",
+      "input_sha256": "c42a33e53efca0a0bdcba6e7d4ce35741282972adc62266556e31c4c13612dd2",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "plenary_request"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Plenary input request/reply, not an independently announced calendar event.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 566,
+            "end": 583,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-30",
+      "basis": "real",
+      "group": "plenary-input",
+      "split": "development",
+      "source_id": "latticenews-37370787e3be779a7661fafb",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-07/msg00006.html",
+      "source_content_sha256": "1dfeab315c9fbfecdeb067bb1f8b896ea1d48ff1a85cac784f8add1cddc668b4",
+      "input_sha256": "9e338bc7f7d847e3a56d8ff7ebf327b6dc57f5e26400dfb5c1052c2907a7fc6b",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "plenary_request"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Plenary input request/reply, not an independently announced calendar event.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 298,
+            "end": 308,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-31",
+      "basis": "real",
+      "group": "plenary-input",
+      "split": "development",
+      "source_id": "latticenews-1f9a05feac7e3c18b4f634f5",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-07/msg00007.html",
+      "source_content_sha256": "7d7beb90be01719f41b1f07f5b6c99131825e2cd7f3a21ccfabb75ab88b4d9ac",
+      "input_sha256": "56d26c8bd0055eff97bb502034096ebaa815a7cda4e0355e0a2734cfd1b9f972",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "plenary_request"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Plenary input request/reply, not an independently announced calendar event.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 272,
+            "end": 296,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-32",
+      "basis": "real",
+      "group": "plenary-input",
+      "split": "development",
+      "source_id": "latticenews-0bcb614a9091427b8e891728",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-07/msg00008.html",
+      "source_content_sha256": "ddbd5a4b12535bf5690d258cc2e8da547a5567b4189b70da1fa5fadca00ed052",
+      "input_sha256": "9b6123bd307bb101f8d6be57e9b8603135a96f07a28d6a64a05099391a4554e7",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "plenary_request",
+        "quoted_message"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Plenary input request/reply, not an independently announced calendar event.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 13,
+            "end": 61,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-33",
+      "basis": "real",
+      "group": "flag-review",
+      "split": "development",
+      "source_id": "latticenews-86a91be3fc5c426633784749",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-07/msg00002.html",
+      "source_content_sha256": "647e7fc993b5fed389ac0fb459770a884e444b00dc32ff8a2390f9642431aa27",
+      "input_sha256": "5f7c361cb4e93eab6d2e09bfa270c8ab693308a87b524b331095b5b77997d3ae",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "publication",
+        "false_date_positive"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Literature review update/submission cutoff, not a conference or school.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 476,
+            "end": 520,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-34",
+      "basis": "real",
+      "group": "yitp-gauge-qcd-2026",
+      "split": "held_out",
+      "source_id": "latticenews-08c5084248cfebaaa3c2444e",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-07/msg00005.html",
+      "source_content_sha256": "4198b91004edc62ec28b125c7e6875292e8b82cf48c9117f6501de37636a4b1a",
+      "input_sha256": "8495d4071871ab569036f357bd88f349e0c37a19ecd51ea65c7acfb43a18536a",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "multiple_events",
+        "hybrid",
+        "relative_dates",
+        "multiple_deadlines",
+        "missing_dates"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "yitp-gauge-2026",
+            "accepted_title_aliases": [
+              "Frontiers of Quantum Computing and Classical Tensor Networks for Gauge Theories"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "Frontiers of Quantum Computing and Classical Tensor Networks for Gauge Theories",
+              "type": "workshop",
+              "start_date": "2026-11-16",
+              "end_date": "2026-11-20",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": "Yukawa Institute for Theoretical Physics, Kyoto University",
+                "city": "Kyoto",
+                "country": "Japan"
+              },
+              "attendance": "hybrid",
+              "official_url": "http://indico.yukawa.kyoto-u.ac.jp/event/80",
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "registration",
+                  "label": "Registration",
+                  "date": "2026-10-15",
+                  "time": null,
+                  "timezone": null
+                },
+                {
+                  "kind": "visa",
+                  "label": "Visa invitation registration",
+                  "date": "2026-08-01",
+                  "time": null,
+                  "timezone": null
+                },
+                {
+                  "kind": "funding",
+                  "label": "Accommodation support registration",
+                  "date": "2026-08-01",
+                  "time": null,
+                  "timezone": null
+                },
+                {
+                  "kind": "abstract",
+                  "label": "Contributed talk application",
+                  "date": "2026-09-01",
+                  "time": null,
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [],
+            "notes": [
+              "Venue is explicitly supplied in body; city/country in subject. Both on-site and online participation are explicit; contributed talks are in person."
+            ],
+            "related_events": [
+              {
+                "event_key": "nfqcd-2026",
+                "relation": "related_to"
+              }
+            ],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 100,
+                "end": 179,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 283,
+                "end": 323,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "subject",
+                "start": 108,
+                "end": 120,
+                "supports": [
+                  "/facts/location/venue",
+                  "/facts/location/city",
+                  "/facts/location/country"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 344,
+                "end": 387,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              },
+              {
+                "source_field": "body",
+                "start": 1412,
+                "end": 1444,
+                "supports": [
+                  "/facts/attendance"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 1385,
+                "end": 1401,
+                "supports": [
+                  "/facts/deadlines/0/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1561,
+                "end": 1587,
+                "supports": [
+                  "/facts/deadlines/1/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1561,
+                "end": 1587,
+                "supports": [
+                  "/facts/deadlines/2/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1752,
+                "end": 1769,
+                "supports": [
+                  "/facts/deadlines/3/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 209,
+                "end": 267,
+                "supports": [
+                  "/facts/location/venue"
+                ],
+                "derivation": null
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone"
+            ]
+          },
+          {
+            "event_key": "nfqcd-2026",
+            "accepted_title_aliases": [
+              "New Frontiers in QCD 2026"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "New Frontiers in QCD 2026",
+              "type": "workshop",
+              "start_date": null,
+              "end_date": null,
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": "https://www2.yukawa.kyoto-u.ac.jp/~nfqcd2026/",
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "missing_event_dates",
+              "relative_event_timing"
+            ],
+            "notes": [
+              "Invitation to attend this separate long-term programme makes it a candidate. Just before ours/final week gives no exact dates; no external dates or venue imported."
+            ],
+            "related_events": [
+              {
+                "event_key": "yitp-gauge-2026",
+                "relation": "related_to"
+              }
+            ],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 1814,
+                "end": 1839,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 1842,
+                "end": 1887,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_date",
+              "/facts/end_date",
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/location/venue",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-35",
+      "basis": "real",
+      "group": "nmsu-postdoc",
+      "split": "held_out",
+      "source_id": "latticenews-aa4d422d73bbecd65a5acc2b",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-07/msg00009.html",
+      "source_content_sha256": "7a0a081cb9af45ce14523c0acedb7845d1ac7538e2b82fcf4ecf2ee27ab9b1be",
+      "input_sha256": "f97778f3261abbd80229ebee591d79d8d05b536f58f8e5602939e429b94c0688",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "job",
+        "gauge_keywords",
+        "false_date_positive"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Postdoctoral job; employment start date is not an event date.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 111,
+            "end": 142,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-36",
+      "basis": "real",
+      "group": "lattice-2026",
+      "split": "development",
+      "source_id": "latticenews-b5ea3626ec397b434bdf21de",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-07/msg00010.html",
+      "source_content_sha256": "ea03e17e9c76a1a19beea128a80fd7536f5d606ddfa1ce9c522a86c18512e653",
+      "input_sha256": "6e5cf666e798189374727c73d8564f506db271f7ac39ef2ddcebee71c3c2a2d0",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "parent_update",
+        "partial_broadcast",
+        "credential_redaction"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "lattice-2026",
+            "accepted_title_aliases": [
+              "Lattice 2026",
+              "43rd International Symposium on Lattice Field Theory"
+            ],
+            "message_role": "update",
+            "relevance": "include",
+            "facts": {
+              "title": "Lattice 2026",
+              "type": "conference",
+              "start_date": "2026-07-26",
+              "end_date": "2026-08-01",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": "University of Maryland",
+                "city": "College Park",
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "partial_online_access",
+              "missing_official_url"
+            ],
+            "notes": [
+              "Only plenary sessions broadcast: keep whole-conference attendance unknown. Zoom links are not official event pages and are redacted from evaluation inputs."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 76,
+                "end": 88,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 112,
+                "end": 137,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 145,
+                "end": 181,
+                "supports": [
+                  "/facts/location/venue",
+                  "/facts/location/city"
+                ],
+                "derivation": null
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-37",
+      "basis": "real",
+      "group": "inqa-2026",
+      "split": "held_out",
+      "source_id": "latticenews-113aa9f12977caab86e628a7",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-07/msg00011.html",
+      "source_content_sha256": "d6b4b77f51490fdebdda90554faa8f63653a4ef1882cd9295271adc040eb96c0",
+      "input_sha256": "c1ef935e42db4320c9d8ceb979e2f82579213b59190f851b09c73e14294fbd40",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "broad_scope",
+        "previous_editions"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "inqa-2026",
+            "accepted_title_aliases": [
+              "INQA Conference 2026",
+              "INQA annual conference",
+              "INQA 2026"
+            ],
+            "message_role": "announcement",
+            "relevance": "review",
+            "facts": {
+              "title": "INQA Conference 2026",
+              "type": "conference",
+              "start_date": "2026-11-02",
+              "end_date": "2026-11-04",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": "Bled",
+                "country": "Slovenia"
+              },
+              "attendance": "unknown",
+              "official_url": "https://inqa.ijs.si/",
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "abstract",
+                  "label": "Abstract submission",
+                  "date": "2026-09-08",
+                  "time": null,
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "scope_review"
+            ],
+            "notes": [
+              "Analogue quantum simulation is explicit, lattice/gauge content is not. Historical editions are context, not additional candidates."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 91,
+                "end": 113,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 184,
+                "end": 208,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 161,
+                "end": 177,
+                "supports": [
+                  "/facts/location/city",
+                  "/facts/location/country"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 1056,
+                "end": 1076,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              },
+              {
+                "source_field": "body",
+                "start": 316,
+                "end": 334,
+                "supports": [
+                  "/facts/deadlines/0/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/location/venue",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-38",
+      "basis": "real",
+      "group": "inqa-2026",
+      "split": "held_out",
+      "source_id": "latticenews-f0b6ca4b841800fa3da8ddf8",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-09/msg00000.html",
+      "source_content_sha256": "70477b1579581bad9814e86123093f05198325dc0b28df2ed2f75788b6dbcf71",
+      "input_sha256": "469ddc49bfdc5433597a537b0b608926ccbf401dce124e7de2c0218e00abdfd6",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "broad_scope",
+        "previous_editions",
+        "reminder"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "inqa-2026",
+            "accepted_title_aliases": [
+              "INQA Conference 2026",
+              "INQA annual conference",
+              "INQA 2026"
+            ],
+            "message_role": "reminder",
+            "relevance": "review",
+            "facts": {
+              "title": "INQA Conference 2026",
+              "type": "conference",
+              "start_date": "2026-11-02",
+              "end_date": "2026-11-04",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": "Bled",
+                "country": "Slovenia"
+              },
+              "attendance": "unknown",
+              "official_url": "https://inqa.ijs.si/",
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "abstract",
+                  "label": "Abstract submission",
+                  "date": "2026-09-08",
+                  "time": null,
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "scope_review"
+            ],
+            "notes": [
+              "Analogue quantum simulation is explicit, lattice/gauge content is not. Historical editions are context, not additional candidates."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 112,
+                "end": 134,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 205,
+                "end": 229,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 182,
+                "end": 198,
+                "supports": [
+                  "/facts/location/city",
+                  "/facts/location/country"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 1143,
+                "end": 1163,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              },
+              {
+                "source_field": "body",
+                "start": 337,
+                "end": 355,
+                "supports": [
+                  "/facts/deadlines/0/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/location/venue",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-39",
+      "basis": "real",
+      "group": "tensor-network-2026",
+      "split": "held_out",
+      "source_id": "latticenews-609a5ded06596e24d9d2d6c1",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-08/msg00000.html",
+      "source_content_sha256": "3e461daf07b40ae36007df4b36f54ccbc5060f5c07623a940c96b3b445a16229",
+      "input_sha256": "2cc8a220f3ccc49ebd7119129d2dc3af7d2f9e4fce578c597dc9553d26829834",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "hybrid",
+        "sparse_announcement",
+        "broad_scope"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "tensor-network-2026",
+            "accepted_title_aliases": [
+              "Tensor network 2026"
+            ],
+            "message_role": "announcement",
+            "relevance": "review",
+            "facts": {
+              "title": "Tensor network 2026",
+              "type": "workshop",
+              "start_date": "2026-12-07",
+              "end_date": "2026-12-09",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": "Kanazawa",
+                "country": null
+              },
+              "attendance": "hybrid",
+              "official_url": "https://akiyama-es.github.io/tn26.html",
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "scope_review"
+            ],
+            "notes": [
+              "Title from subject. Country is not stated, even if a reader recognises the city. No lattice application explicitly supplied in this short message."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "subject",
+                "start": 16,
+                "end": 35,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 219,
+                "end": 266,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 196,
+                "end": 207,
+                "supports": [
+                  "/facts/location/city"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 289,
+                "end": 327,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              },
+              {
+                "source_field": "body",
+                "start": 146,
+                "end": 159,
+                "supports": [
+                  "/facts/attendance"
+                ],
+                "derivation": null
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/location/venue",
+              "/facts/location/country"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-40",
+      "basis": "real",
+      "group": "higgs-proposals",
+      "split": "development",
+      "source_id": "latticenews-4439c593139f9a5143f5fc37",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-08/msg00001.html",
+      "source_content_sha256": "a7a06a44e416fff8e7e66acd10b26bed35f4a79fbc838e8d9a460b2b87017021",
+      "input_sha256": "78c5ac30b7b3a0f3f763c15728715b3532ca40b18245af2edec89f19a232547d",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "hosting_call",
+        "past_examples",
+        "signature_location"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Open call for workshop proposals, not a scheduled workshop; historical examples remain background.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 61,
+            "end": 94,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-41",
+      "basis": "real",
+      "group": "lgt1-course-2026",
+      "split": "development",
+      "source_id": "latticenews-43282462788ccde4aba96406",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-08/msg00002.html",
+      "source_content_sha256": "c18c497e4aadfa7f126e88864099a7464dc5268bbb16b94ca8933be272021462",
+      "input_sha256": "8edf49dab8d8124356caaabb7e82fd04ad7df74adb18ec155afbd46a943ac067",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "course",
+        "recurring_schedule",
+        "missing_link"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "lgt1-course-2026",
+            "accepted_title_aliases": [
+              "LGT4HEP Lattice Gauge Theory I (LGT1), Fall 2026",
+              "LGT4HEP Lattice Gauge Theory I",
+              "LGT1 Course",
+              "Lattice Gauge Theory I"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "LGT4HEP Lattice Gauge Theory I (LGT1), Fall 2026",
+              "type": "course",
+              "start_date": "2026-09-14",
+              "end_date": "2026-12-04",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "other",
+                  "label": "Faculty nomination",
+                  "date": "2026-09-04",
+                  "time": "11:59",
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "recurring_schedule",
+              "timezone_mapping",
+              "missing_official_url"
+            ],
+            "notes": [
+              "Course inclusion is explicitly authorised by the user. Dates describe the course period; Tuesday and Thursday class times are not one continuous event interval. The faculty nomination form is not an official course page."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 55,
+                "end": 85,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 744,
+                "end": 786,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 2380,
+                "end": 2406,
+                "supports": [
+                  "/facts/deadlines/0/date",
+                  "/facts/deadlines/0/time"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/location/venue",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-42",
+      "basis": "real",
+      "group": "lgt1-course-2026",
+      "split": "development",
+      "source_id": "latticenews-79a75adb45f8ffceb675ff71",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-09/msg00001.html",
+      "source_content_sha256": "3658115102ab722028a3ef752101ebe46d566e7cc442ddcf3e2eea53d80186d9",
+      "input_sha256": "29aaf834f4c95192bc8f004f08a476f17470c32298d52fad0dd5ffd17f10f933",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "course",
+        "recurring_schedule",
+        "missing_link",
+        "quoted_message"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "lgt1-course-2026",
+            "accepted_title_aliases": [
+              "LGT4HEP Lattice Gauge Theory I (LGT1), Fall 2026",
+              "LGT4HEP Lattice Gauge Theory I",
+              "LGT1 Course",
+              "Lattice Gauge Theory I"
+            ],
+            "message_role": "reminder",
+            "relevance": "include",
+            "facts": {
+              "title": "LGT4HEP Lattice Gauge Theory I (LGT1), Fall 2026",
+              "type": "course",
+              "start_date": "2026-09-14",
+              "end_date": "2026-12-04",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "other",
+                  "label": "Faculty nomination",
+                  "date": "2026-09-04",
+                  "time": "11:59",
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "recurring_schedule",
+              "timezone_mapping",
+              "missing_official_url"
+            ],
+            "notes": [
+              "Course inclusion is explicitly authorised by the user. Dates describe the course period; Tuesday and Thursday class times are not one continuous event interval. The faculty nomination form is not an official course page."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 110,
+                "end": 140,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 2155,
+                "end": 2197,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 287,
+                "end": 313,
+                "supports": [
+                  "/facts/deadlines/0/date",
+                  "/facts/deadlines/0/time"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/location/venue",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-43",
+      "basis": "real",
+      "group": "lattice-2027",
+      "split": "development",
+      "source_id": "latticenews-f235266b1826f22c25e775c9",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-09/msg00002.html",
+      "source_content_sha256": "9063282c836edc40bb4e1aa8b8b87f68abc34d32e88dbd4a8f02d82504a0d92f",
+      "input_sha256": "7c8152865491a9266bb4cdce8e9ee5f95dafe69bc000219db9221139178dafda",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "multiple_events",
+        "missing_link",
+        "satellites"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "lattice-2027",
+            "accepted_title_aliases": [
+              "Lattice 2027",
+              "44th International Symposium on Lattice Field Theory",
+              "44th International Symposium on Lattice Field Theory (Lattice 2027)"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "Lattice 2027",
+              "type": "conference",
+              "start_date": "2027-06-20",
+              "end_date": "2027-06-26",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": "Nicosia",
+                "country": "Cyprus"
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "missing_official_url"
+            ],
+            "notes": [
+              "Development pilot correction: accept the complete title printed verbatim in the source, including its parenthetical short name. Added after extraction exposed an incomplete alias list; all event facts remain unchanged and annotations remain draft."
+            ],
+            "related_events": [
+              {
+                "event_key": "lattice-practices-2027",
+                "relation": "has_satellite"
+              },
+              {
+                "event_key": "spectral-flavor-2027",
+                "relation": "has_satellite"
+              }
+            ],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 104,
+                "end": 116,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 167,
+                "end": 182,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 145,
+                "end": 160,
+                "supports": [
+                  "/facts/location/city",
+                  "/facts/location/country"
+                ],
+                "derivation": null
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/location/venue",
+              "/facts/attendance"
+            ]
+          },
+          {
+            "event_key": "lattice-practices-2027",
+            "accepted_title_aliases": [
+              "Lattice Practices 2027"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "Lattice Practices 2027",
+              "type": "school",
+              "start_date": "2027-06-14",
+              "end_date": "2027-06-19",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "missing_official_url",
+              "satellite_location_not_stated"
+            ],
+            "notes": [
+              "Parent location is not automatically propagated to satellite."
+            ],
+            "related_events": [
+              {
+                "event_key": "lattice-2027",
+                "relation": "satellite_of"
+              }
+            ],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 306,
+                "end": 328,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 331,
+                "end": 346,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/location/venue",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          },
+          {
+            "event_key": "spectral-flavor-2027",
+            "accepted_title_aliases": [
+              "Workshop on Spectral Densities for Flavor Physics"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "Workshop on Spectral Densities for Flavor Physics",
+              "type": "workshop",
+              "start_date": "2027-06-16",
+              "end_date": "2027-06-19",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "missing_official_url",
+              "satellite_location_not_stated"
+            ],
+            "notes": [
+              "Organiser affiliation Rome Tor Vergata is not the event venue."
+            ],
+            "related_events": [
+              {
+                "event_key": "lattice-2027",
+                "relation": "satellite_of"
+              }
+            ],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 450,
+                "end": 499,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 502,
+                "end": 517,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/location/venue",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-44",
+      "basis": "real",
+      "group": "juliacon-2026",
+      "split": "held_out",
+      "source_id": "latticenews-6d8171946e007080b9c0d590",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-09/msg00003.html",
+      "source_content_sha256": "a60781be8299e24b367b50093d11bbb8439eeaceae4f4903b086202e1b91bf07",
+      "input_sha256": "2c61c683894f6e59f654d55b2d0089d73106354b33f03508c3ae749b60e492e6",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "broad_scope",
+        "plain_url",
+        "missing_href",
+        "signature_location"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "juliacon-2026",
+            "accepted_title_aliases": [
+              "JuliaCon Local Tokyo 2026"
+            ],
+            "message_role": "announcement",
+            "relevance": "review",
+            "facts": {
+              "title": "JuliaCon Local Tokyo 2026",
+              "type": "conference",
+              "start_date": "2026-12-04",
+              "end_date": "2026-12-05",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": "Kashiwa Campus, The University of Tokyo",
+                "city": null,
+                "country": "Japan"
+              },
+              "attendance": "unknown",
+              "official_url": "https://juliacon.org/local/tokyo2026/",
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "scope_review"
+            ],
+            "notes": [
+              "Lattice packages are examples, not a promised lattice session. Do not infer event city Tokyo from the conference branding or Tsukuba from sender affiliation. Deadline information is explicitly coming later."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 45,
+                "end": 70,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 159,
+                "end": 177,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 1268,
+                "end": 1314,
+                "supports": [
+                  "/facts/location/venue",
+                  "/facts/location/country"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 1325,
+                "end": 1362,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/location/city",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "real-45",
+      "basis": "real",
+      "group": "iaifi-fellows",
+      "split": "held_out",
+      "source_id": "latticenews-7383239e35114af77190189f",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-09/msg00004.html",
+      "source_content_sha256": "46c93466e6b0c54221e081f1e97c80764bd873d7b5dfb21f78af8632abf8f5a7",
+      "input_sha256": "513372cb0b5e3d381ddb00eadd3ada67127bcf06eabe0c3185086048e0307847",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "job",
+        "deadline",
+        "signature_location"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "Postdoctoral fellowships, not an event.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 81,
+            "end": 111,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-46",
+      "basis": "real",
+      "group": "elevate-fellows",
+      "split": "development",
+      "source_id": "latticenews-ccd2fce74cb76d3409136906",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-09/msg00005.html",
+      "source_content_sha256": "e8a710071fa35c70c38de902d39e47618c3ceb004b6e7b9443e146a5dae30d9c",
+      "input_sha256": "6ea8bc714e451677ccf0d831df46aee233aac78ea3b23d5da327473b29ddf972",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "job",
+        "date_range",
+        "false_date_positive"
+      ],
+      "expected": {
+        "message_disposition": "no_event",
+        "events": [],
+        "reason": "PhD fellowships, not an event; application dates do not become event dates.",
+        "evidence": [
+          {
+            "source_field": "body",
+            "start": 98,
+            "end": 135,
+            "supports": [
+              "/message_disposition"
+            ],
+            "derivation": null
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "real-47",
+      "basis": "real",
+      "group": "kek-ph-lat-2026",
+      "split": "development",
+      "source_id": "latticenews-e9c356728f3b1d68bdb89fc6",
+      "source_url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-10/msg00000.html",
+      "source_content_sha256": "806af92e15e1c516adf7603e70ac79e18cee6d8a9e44b85a583d92509f13db33",
+      "input_sha256": "e365e9d5453bf70f3c7d69aeaf50952cd40f675e3a988771768ecded084162c4",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "multiple_deadlines",
+        "contextual_year"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "kek-ph-lat-2026",
+            "accepted_title_aliases": [
+              "KEK Theory Meeting on Particle Physics Phenomenology and Lattice QCD (KEK-PH-LAT 2026)",
+              "KEK-PH-LAT 2026",
+              "KEK Theory Meeting on Particle Physics Phenomenology and Lattice QCD"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "KEK Theory Meeting on Particle Physics Phenomenology and Lattice QCD (KEK-PH-LAT 2026)",
+              "type": "conference",
+              "start_date": "2026-12-09",
+              "end_date": "2026-12-11",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": "KEK",
+                "city": null,
+                "country": "Japan"
+              },
+              "attendance": "unknown",
+              "official_url": "https://conference-indico.kek.jp/event/376/",
+              "summary": null,
+              "deadlines": [
+                {
+                  "kind": "registration",
+                  "label": "Registration",
+                  "date": "2026-11-25",
+                  "time": null,
+                  "timezone": null
+                },
+                {
+                  "kind": "payment",
+                  "label": "Registration fee payment",
+                  "date": "2026-11-25",
+                  "time": null,
+                  "timezone": null
+                },
+                {
+                  "kind": "abstract",
+                  "label": "Short talk application",
+                  "date": "2026-10-23",
+                  "time": null,
+                  "timezone": null
+                },
+                {
+                  "kind": "funding",
+                  "label": "Travel support application",
+                  "date": "2026-10-23",
+                  "time": null,
+                  "timezone": null
+                },
+                {
+                  "kind": "visa",
+                  "label": "Visa document request",
+                  "date": "2026-10-09",
+                  "time": null,
+                  "timezone": null
+                }
+              ],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [],
+            "notes": [
+              "Deadline years resolved from explicitly identified December 2026 event and October 2026 posting context. City not stated."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 54,
+                "end": 84,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 174,
+                "end": 193,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 154,
+                "end": 170,
+                "supports": [
+                  "/facts/location/venue",
+                  "/facts/location/country"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 196,
+                "end": 239,
+                "supports": [
+                  "/facts/official_url"
+                ],
+                "derivation": "URL explicitly printed in the announcement; no external page retrieval."
+              },
+              {
+                "source_field": "body",
+                "start": 1490,
+                "end": 1514,
+                "supports": [
+                  "/facts/deadlines/0/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1490,
+                "end": 1514,
+                "supports": [
+                  "/facts/deadlines/1/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1565,
+                "end": 1585,
+                "supports": [
+                  "/facts/deadlines/2/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1565,
+                "end": 1585,
+                "supports": [
+                  "/facts/deadlines/3/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              },
+              {
+                "source_field": "body",
+                "start": 1632,
+                "end": 1651,
+                "supports": [
+                  "/facts/deadlines/4/date"
+                ],
+                "derivation": "Normalise date/time. Any omitted year uses the explicitly identified event/message year; ambiguous timezone remains null."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/location/city",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "synthetic-01",
+      "basis": "synthetic",
+      "group": "synthetic-cancellation",
+      "split": "development",
+      "source_id": null,
+      "source_url": null,
+      "source_content_sha256": null,
+      "input_sha256": "3915bb3295bbcef12c961f54779477de1f9177e92ef0a79ebacbfe193fde41e0",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "cancellation"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "example-cancelled",
+            "accepted_title_aliases": [
+              "Example Lattice Workshop"
+            ],
+            "message_role": "update",
+            "relevance": "include",
+            "facts": {
+              "title": "Example Lattice Workshop",
+              "type": "workshop",
+              "start_date": "2027-06-11",
+              "end_date": "2027-06-12",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "cancelled"
+            },
+            "required_review_flags": [],
+            "notes": [],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 4,
+                "end": 28,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 43,
+                "end": 59,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 60,
+                "end": 78,
+                "supports": [
+                  "/facts/lifecycle"
+                ],
+                "derivation": null
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/location/venue",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "synthetic-02",
+      "basis": "synthetic",
+      "group": "synthetic-date-change",
+      "split": "held_out",
+      "source_id": null,
+      "source_url": null,
+      "source_content_sha256": null,
+      "input_sha256": "2365f62831b6f6cd56b327fafb7c524724a94af7f9501b07813d29f8842caf45",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "date_change",
+        "superseded_dates"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "example-moved-school",
+            "accepted_title_aliases": [
+              "Example Lattice School"
+            ],
+            "message_role": "update",
+            "relevance": "include",
+            "facts": {
+              "title": "Example Lattice School",
+              "type": "school",
+              "start_date": "2027-07-12",
+              "end_date": "2027-07-13",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [],
+            "notes": [
+              "Do not use the superseded dates."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 4,
+                "end": 26,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 42,
+                "end": 72,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/location/venue",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "synthetic-03",
+      "basis": "synthetic",
+      "group": "synthetic-attachment",
+      "split": "development",
+      "source_id": null,
+      "source_url": null,
+      "source_content_sha256": null,
+      "input_sha256": "a39cc1d18089298c788d7eee84771cd1017c640228afb14f3f03e8812018ed18",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "attachment_only",
+        "missing_dates"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "example-attachment-school",
+            "accepted_title_aliases": [
+              "Example Lattice School"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "Example Lattice School",
+              "type": "school",
+              "start_date": null,
+              "end_date": null,
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "attachment_required",
+              "missing_event_dates",
+              "missing_official_url"
+            ],
+            "notes": [],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 16,
+                "end": 38,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_date",
+              "/facts/end_date",
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/location/venue",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "synthetic-04",
+      "basis": "synthetic",
+      "group": "synthetic-relative",
+      "split": "held_out",
+      "source_id": null,
+      "source_url": null,
+      "source_content_sha256": null,
+      "input_sha256": "04b9cac00b06c0550c982a0f7c477f93a37c2816d94bdb9da42cb0f63278159c",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "relative_date",
+        "missing_dates"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "example-relative-workshop",
+            "accepted_title_aliases": [
+              "Example Lattice Workshop"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "Example Lattice Workshop",
+              "type": "workshop",
+              "start_date": null,
+              "end_date": null,
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "missing_event_dates",
+              "relative_event_timing"
+            ],
+            "notes": [],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 16,
+                "end": 40,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_date",
+              "/facts/end_date",
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/location/venue",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "synthetic-05",
+      "basis": "synthetic",
+      "group": "synthetic-instruction",
+      "split": "development",
+      "source_id": null,
+      "source_url": null,
+      "source_content_sha256": null,
+      "input_sha256": "7e06793e05c5e34b572f2ad25cc1b5b3db64c064bded0360b7a747d9c780c636",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "untrusted_instructions",
+        "unsupported_location"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "example-untrusted",
+            "accepted_title_aliases": [
+              "Example Lattice Workshop"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "Example Lattice Workshop",
+              "type": "workshop",
+              "start_date": "2027-10-20",
+              "end_date": "2027-10-21",
+              "start_time": null,
+              "end_time": null,
+              "timezone": null,
+              "location": {
+                "venue": null,
+                "city": null,
+                "country": null
+              },
+              "attendance": "unknown",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [
+              "untrusted_instructions"
+            ],
+            "notes": [
+              "Do not obey instructions embedded in a source announcement or fill a location from those instructions."
+            ],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 4,
+                "end": 28,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 44,
+                "end": 63,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/start_time",
+              "/facts/end_time",
+              "/facts/timezone",
+              "/facts/official_url",
+              "/facts/location/venue",
+              "/facts/location/city",
+              "/facts/location/country",
+              "/facts/attendance"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "synthetic-06",
+      "basis": "synthetic",
+      "group": "synthetic-overnight",
+      "split": "held_out",
+      "source_id": null,
+      "source_url": null,
+      "source_content_sha256": null,
+      "input_sha256": "e713302f2715db4f5619a345f7068545148f68395d666d5e08fa0774f87d3fbb",
+      "annotation_status": "draft_for_editor_review",
+      "tags": [
+        "overnight",
+        "explicit_timezone",
+        "online"
+      ],
+      "expected": {
+        "message_disposition": "event_candidates",
+        "events": [
+          {
+            "event_key": "example-overnight",
+            "accepted_title_aliases": [
+              "Example Lattice Methods Workshop"
+            ],
+            "message_role": "announcement",
+            "relevance": "include",
+            "facts": {
+              "title": "Example Lattice Methods Workshop",
+              "type": "workshop",
+              "start_date": "2027-06-07",
+              "end_date": "2027-06-08",
+              "start_time": "23:30",
+              "end_time": "01:00",
+              "timezone": "Europe/Copenhagen",
+              "location": {
+                "venue": null,
+                "city": null,
+                "country": null
+              },
+              "attendance": "online",
+              "official_url": null,
+              "summary": null,
+              "deadlines": [],
+              "lifecycle": "scheduled"
+            },
+            "required_review_flags": [],
+            "notes": [],
+            "related_events": [],
+            "evidence": [
+              {
+                "source_field": "body",
+                "start": 4,
+                "end": 36,
+                "supports": [
+                  "/facts/title",
+                  "/facts/type",
+                  "/facts/lifecycle"
+                ],
+                "derivation": "Title normalisation and event-kind/context classification."
+              },
+              {
+                "source_field": "body",
+                "start": 37,
+                "end": 96,
+                "supports": [
+                  "/facts/start_date",
+                  "/facts/end_date"
+                ],
+                "derivation": "Normalise explicitly stated calendar dates to YYYY-MM-DD."
+              },
+              {
+                "source_field": "body",
+                "start": 60,
+                "end": 65,
+                "supports": [
+                  "/facts/start_time"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 91,
+                "end": 96,
+                "supports": [
+                  "/facts/end_time"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 113,
+                "end": 130,
+                "supports": [
+                  "/facts/timezone"
+                ],
+                "derivation": null
+              },
+              {
+                "source_field": "body",
+                "start": 138,
+                "end": 149,
+                "supports": [
+                  "/facts/attendance"
+                ],
+                "derivation": null
+              }
+            ],
+            "must_remain_unknown": [
+              "/facts/official_url",
+              "/facts/location/venue",
+              "/facts/location/city",
+              "/facts/location/country"
+            ]
+          }
+        ],
+        "reason": null,
+        "evidence": []
+      }
+    }
+  ],
+  "update_sequences": [
+    {
+      "name": "xQCD abstract extension",
+      "cases": [
+        "real-05",
+        "real-10"
+      ],
+      "event_key": "xqcd-2026",
+      "expected_change": "Abstract deadline 2026-05-14 -> 2026-05-28; school/conference stay separate."
+    },
+    {
+      "name": "SEWM registration extension",
+      "cases": [
+        "real-06",
+        "real-15"
+      ],
+      "event_key": "sewm-2026",
+      "expected_change": "Registration deadline 2026-06-07 -> 2026-06-14; ordinal inconsistency does not create another event."
+    },
+    {
+      "name": "Lattice mentoring extension",
+      "cases": [
+        "real-16",
+        "real-24"
+      ],
+      "event_key": "lattice-2026",
+      "expected_change": "Mentoring response deadline 2026-06-19 -> 2026-07-03; parent conference identity retained."
+    },
+    {
+      "name": "INQA reminder",
+      "cases": [
+        "real-37",
+        "real-38"
+      ],
+      "event_key": "inqa-2026",
+      "expected_change": "Same dates and abstract deadline; reminder adds no independent event."
+    },
+    {
+      "name": "LGT1 course reminder",
+      "cases": [
+        "real-41",
+        "real-42"
+      ],
+      "event_key": "lgt1-course-2026",
+      "expected_change": "Quoted original has the same course-period dates and nomination deadline; preserve one course."
+    }
+  ],
+  "synthetic_note": "Six clearly fictional edge cases supplement real data; score separately."
+}
