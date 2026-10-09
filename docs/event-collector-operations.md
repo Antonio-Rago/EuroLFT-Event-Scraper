@@ -125,6 +125,11 @@ _event_collector/local/venv/bin/python -m tools.event_collector.submit PACKAGE_D
 ```
 
 The script uses dedicated private checkouts to commit only packaged event records.
+A repository maintainer can label a proposal `event-review-reset` before closing it
+for an administrative restart. This closure leaves its event eligible for another
+proposal; it is not an editorial rejection. Ordinary unmerged closures still reject
+the event.
+
 A stale saved queue cannot overwrite later human corrections. Reopen a rejected PR
 to reconsider it; closing and deleting its branch does not erase the rejection receipt.
 

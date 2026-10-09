@@ -8,6 +8,8 @@ from .moderate import decide
 from .registry import validator
 from .reconcile import validate_record
 
+RESET_LABEL = "event-review-reset"
+
 
 def pages(client, path, limit=20):
     separator = "&" if "?" in path else "?"
@@ -24,6 +26,9 @@ def closed_rejections(client, root):
     for pull in pages(client, "/pulls?state=closed&base=main&sort=updated&direction=desc"):
         branch = pull.get("head", {}).get("ref", "")
         if pull.get("merged_at") or not branch.startswith("automation/community-events"):
+            continue
+        if any(label.get("name") == RESET_LABEL for label in pull.get("labels", [])):
+            # Administrative resets preserve the queue; they are not editorial decisions.
             continue
         head = pull.get("head", {})
         if (head.get("repo") or {}).get("full_name") != "EuroLFT/eurolft.github.io":

@@ -131,10 +131,11 @@ class ClosedClient:
         self.record = record
         self.merged = False
         self.human = True
+        self.labels = []
 
     def request(self, path):
         if path.startswith("/pulls?state=closed"):
-            return [{"number": 42, "merged_at": "2026-10-09T12:00:00Z" if self.merged else None,
+            return [{"number": 42, "labels": self.labels, "merged_at": "2026-10-09T12:00:00Z" if self.merged else None,
                      "head": {"ref": BRANCH, "sha": "a" * 40, "repo": {"full_name": "EuroLFT/eurolft.github.io"}}}]
         if path.startswith("/issues/42/events"):
             return [{"event": "closed", "created_at": "2026-10-09T13:00:00Z",
@@ -147,6 +148,16 @@ class ClosedClient:
 
 
 class ClosedReviewTests(TemporaryRoot):
+    def test_administrative_reset_does_not_reject_or_read_the_event(self):
+        client = ClosedClient(candidate("event-reset"))
+        client.labels = [{"name": "event-review-reset"}]
+        original_request = client.request
+        def request(path):
+            self.assertTrue(path.startswith("/pulls?state=closed"))
+            return original_request(path)
+        client.request = request
+        self.assertFalse(closed_rejections(client, self.root))
+
     def test_a_human_closed_pr_is_an_exclusion_with_its_actual_actor_and_time(self):
         record = candidate("event-closed")
         result = closed_rejections(ClosedClient(record), self.root)
