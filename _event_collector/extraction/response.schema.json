@@ -1,0 +1,552 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "enum": [
+        3
+      ]
+    },
+    "disposition": {
+      "type": "string",
+      "enum": [
+        "event_candidates",
+        "no_event"
+      ]
+    },
+    "reason": {
+      "type": "string"
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "local_id": {
+            "type": "string"
+          },
+          "facts": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "conference",
+                  "workshop",
+                  "school",
+                  "software_training",
+                  "course",
+                  "seminar",
+                  "collaboration_meeting",
+                  "other",
+                  "unknown"
+                ],
+                "type": "string"
+              },
+              "start_date": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "end_date": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "start_time": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "end_time": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "timezone": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "location": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "venue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "city": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "country": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "venue",
+                  "city",
+                  "country"
+                ]
+              },
+              "attendance": {
+                "enum": [
+                  "unknown",
+                  "in_person",
+                  "online",
+                  "hybrid"
+                ],
+                "type": "string"
+              },
+              "official_url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "summary": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "deadlines": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "enum": [
+                        "registration",
+                        "abstract",
+                        "payment",
+                        "funding",
+                        "visa",
+                        "other"
+                      ],
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "date": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "time": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "timezone": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "label",
+                    "date",
+                    "time",
+                    "timezone"
+                  ]
+                }
+              },
+              "lifecycle": {
+                "enum": [
+                  "scheduled",
+                  "cancelled",
+                  "unknown"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "title",
+              "type",
+              "start_date",
+              "end_date",
+              "start_time",
+              "end_time",
+              "timezone",
+              "location",
+              "attendance",
+              "official_url",
+              "summary",
+              "deadlines",
+              "lifecycle"
+            ]
+          },
+          "message_role": {
+            "type": "string",
+            "enum": [
+              "announcement",
+              "update",
+              "reminder"
+            ]
+          },
+          "relevance": {
+            "type": "string",
+            "enum": [
+              "include",
+              "review"
+            ]
+          },
+          "review_flags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "related_events": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "local_id": {
+                  "type": "string"
+                },
+                "relation": {
+                  "type": "string",
+                  "enum": [
+                    "satellite_of",
+                    "has_satellite",
+                    "related_to"
+                  ]
+                },
+                "evidence": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "source_field": {
+                      "type": "string",
+                      "enum": [
+                        "subject",
+                        "body",
+                        "links"
+                      ]
+                    },
+                    "link_index": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "quote": {
+                      "type": "string"
+                    },
+                    "derivation": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "source_field",
+                    "link_index",
+                    "quote",
+                    "derivation"
+                  ]
+                }
+              },
+              "required": [
+                "local_id",
+                "relation",
+                "evidence"
+              ]
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "source_field": {
+                  "type": "string",
+                  "enum": [
+                    "subject",
+                    "body",
+                    "links"
+                  ]
+                },
+                "link_index": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "quote": {
+                  "type": "string"
+                },
+                "supports": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "derivation": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "source_field",
+                "link_index",
+                "quote",
+                "supports",
+                "derivation"
+              ]
+            }
+          },
+          "classification_evidence": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "source_field": {
+                    "type": "string",
+                    "enum": [
+                      "subject",
+                      "body",
+                      "links"
+                    ]
+                  },
+                  "link_index": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "quote": {
+                    "type": "string"
+                  },
+                  "derivation": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "source_field",
+                  "link_index",
+                  "quote",
+                  "derivation"
+                ]
+              },
+              "lifecycle": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "source_field": {
+                    "type": "string",
+                    "enum": [
+                      "subject",
+                      "body",
+                      "links"
+                    ]
+                  },
+                  "link_index": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "quote": {
+                    "type": "string"
+                  },
+                  "derivation": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "source_field",
+                  "link_index",
+                  "quote",
+                  "derivation"
+                ]
+              },
+              "message_role": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "source_field": {
+                    "type": "string",
+                    "enum": [
+                      "subject",
+                      "body",
+                      "links"
+                    ]
+                  },
+                  "link_index": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "quote": {
+                    "type": "string"
+                  },
+                  "derivation": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "source_field",
+                  "link_index",
+                  "quote",
+                  "derivation"
+                ]
+              },
+              "relevance": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "source_field": {
+                    "type": "string",
+                    "enum": [
+                      "subject",
+                      "body",
+                      "links"
+                    ]
+                  },
+                  "link_index": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "quote": {
+                    "type": "string"
+                  },
+                  "derivation": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "source_field",
+                  "link_index",
+                  "quote",
+                  "derivation"
+                ]
+              },
+              "attendance": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "source_field": {
+                        "type": "string",
+                        "enum": [
+                          "subject",
+                          "body",
+                          "links"
+                        ]
+                      },
+                      "link_index": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ]
+                      },
+                      "quote": {
+                        "type": "string"
+                      },
+                      "derivation": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "source_field",
+                      "link_index",
+                      "quote",
+                      "derivation"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "lifecycle",
+              "message_role",
+              "relevance",
+              "attendance"
+            ]
+          }
+        },
+        "required": [
+          "local_id",
+          "facts",
+          "message_role",
+          "relevance",
+          "review_flags",
+          "related_events",
+          "evidence",
+          "classification_evidence"
+        ]
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "disposition",
+    "reason",
+    "events",
+    "warnings"
+  ]
+}

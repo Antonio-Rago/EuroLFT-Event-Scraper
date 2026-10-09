@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "id": "example-manual-workshop-2027",
+  "revision": 1,
+  "origin": "manual",
+  "facts": {
+    "title": "Example manually added lattice workshop",
+    "type": "workshop",
+    "start_date": "2027-05-12",
+    "end_date": "2027-05-13",
+    "start_time": null,
+    "end_time": null,
+    "timezone": null,
+    "location": {
+      "venue": null,
+      "city": "Example City",
+      "country": null
+    },
+    "attendance": "unknown",
+    "official_url": "https://example.org/events/manual-workshop",
+    "summary": null,
+    "deadlines": [
+      {
+        "kind": "registration",
+        "label": "Registration deadline",
+        "date": "2027-04-20",
+        "time": null,
+        "timezone": null
+      }
+    ],
+    "lifecycle": "scheduled"
+  },
+  "sources": [
+    {
+      "id": "example-editor-reference",
+      "kind": "editor",
+      "url": null,
+      "posted_at": null,
+      "retrieved_at": null,
+      "note": "Synthetic editor input for contract demonstration only."
+    }
+  ],
+  "evidence": [],
+  "related_events": [],
+  "identity_aliases": [],
+  "warnings": [],
+  "editor_overrides": [
+    "/facts/title",
+    "/facts/location/city"
+  ],
+  "decision": {
+    "status": "approved",
+    "reviewed_revision": 1,
+    "reason": null,
+    "acknowledged_warnings": []
+  },
+  "history": [
+    {
+      "action": "approve",
+      "actor": "example-editor",
+      "at": "2026-10-08T10:00:00Z",
+      "revision": 1,
+      "note": "Synthetic approval; no real event is being published."
+    }
+  ]
+}

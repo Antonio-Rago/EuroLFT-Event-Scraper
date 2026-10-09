@@ -1,0 +1,2 @@
+# Compatible with the collector's Python 3.9 runtime.
+jsonschema==4.23.0

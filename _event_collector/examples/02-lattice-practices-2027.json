@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "id": "lattice-practices-2027",
+  "revision": 1,
+  "origin": "collected",
+  "facts": {
+    "title": "Lattice Practices 2027",
+    "type": "school",
+    "start_date": "2027-06-14",
+    "end_date": "2027-06-19",
+    "start_time": null,
+    "end_time": null,
+    "timezone": null,
+    "location": {
+      "venue": null,
+      "city": null,
+      "country": null
+    },
+    "attendance": "unknown",
+    "official_url": null,
+    "summary": null,
+    "deadlines": [],
+    "lifecycle": "scheduled"
+  },
+  "sources": [
+    {
+      "id": "latticenews-2026-09-00002",
+      "kind": "announcement",
+      "url": "https://list.iu.edu/sympa/arc/latticenews-l/2026-09/msg00002.html",
+      "posted_at": "2026-09-03T14:44:49Z",
+      "retrieved_at": null,
+      "note": "Manually transcribed from the public announcement inspected on 8 October 2026; organiser-page details not checked."
+    }
+  ],
+  "evidence": [
+    {
+      "field": "/facts/title",
+      "source_id": "latticenews-2026-09-00002",
+      "excerpt": "Lattice Practices 2027"
+    },
+    {
+      "field": "/facts/type",
+      "source_id": "latticenews-2026-09-00002",
+      "excerpt": "a school"
+    },
+    {
+      "field": "/facts/start_date",
+      "source_id": "latticenews-2026-09-00002",
+      "excerpt": "14–19 June 2027"
+    },
+    {
+      "field": "/facts/end_date",
+      "source_id": "latticenews-2026-09-00002",
+      "excerpt": "14–19 June 2027"
+    }
+  ],
+  "related_events": [
+    {
+      "id": "lattice-2027-nicosia",
+      "relation": "satellite_of"
+    }
+  ],
+  "identity_aliases": [
+    "latticenews:https://list.iu.edu/sympa/arc/latticenews-l/2026-09/msg00002.html#event:lattice-practices-2027"
+  ],
+  "warnings": [
+    "Official event URL not available in the inspected message rendering; verify before approval."
+  ],
+  "editor_overrides": [],
+  "decision": {
+    "status": "pending",
+    "reviewed_revision": null,
+    "reason": null,
+    "acknowledged_warnings": []
+  },
+  "history": []
+}

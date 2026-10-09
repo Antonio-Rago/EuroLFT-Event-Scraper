@@ -1,0 +1,15 @@
+{
+  "title": "Enter the event title",
+  "type": "unknown",
+  "start_date": null,
+  "end_date": null,
+  "start_time": null,
+  "end_time": null,
+  "timezone": null,
+  "location": {"venue": null, "city": null, "country": null},
+  "attendance": "unknown",
+  "official_url": null,
+  "summary": null,
+  "deadlines": [],
+  "lifecycle": "scheduled"
+}

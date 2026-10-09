@@ -1,0 +1,46 @@
+{
+  "description": "Independent contract scenarios, not one ingestion dataset. Examples 04–06 are snapshots of the same stable event. All approvals and actors are fictional.",
+  "schema": "../schema/event.schema.json",
+  "cases": [
+    {
+      "file": "01-lattice-2027.json",
+      "basis": "announcement-derived",
+      "purpose": "One announcement, conference with two satellites."
+    },
+    {
+      "file": "02-lattice-practices-2027.json",
+      "basis": "announcement-derived",
+      "purpose": "Satellite school; location not copied from parent."
+    },
+    {
+      "file": "03-spectral-densities-2027.json",
+      "basis": "announcement-derived",
+      "purpose": "Satellite workshop; unknown venue and attendance retained."
+    },
+    {
+      "file": "04-manual-entry.json",
+      "basis": "synthetic",
+      "purpose": "Manual event approved by a fictional editor."
+    },
+    {
+      "file": "05-reminder-matched.json",
+      "basis": "synthetic",
+      "purpose": "Later snapshot of example 04; same ID, corrections preserved."
+    },
+    {
+      "file": "06-hidden-event.json",
+      "basis": "synthetic",
+      "purpose": "Later snapshot of example 05; excluded with aliases retained."
+    },
+    {
+      "file": "07-rejected-event.json",
+      "basis": "synthetic",
+      "purpose": "Unwanted event retained as a decision-only exclusion."
+    },
+    {
+      "file": "08-incomplete-event.json",
+      "basis": "synthetic",
+      "purpose": "Unknown event dates; valid candidate, ineligible for publication."
+    }
+  ]
+}

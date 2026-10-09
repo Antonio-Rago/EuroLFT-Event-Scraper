@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "id": "example-undated-school",
+  "revision": 1,
+  "origin": "collected",
+  "facts": {
+    "title": "Example lattice school with dates to be announced",
+    "type": "school",
+    "start_date": null,
+    "end_date": null,
+    "start_time": null,
+    "end_time": null,
+    "timezone": null,
+    "location": {
+      "venue": null,
+      "city": null,
+      "country": null
+    },
+    "attendance": "unknown",
+    "official_url": null,
+    "summary": null,
+    "deadlines": [],
+    "lifecycle": "unknown"
+  },
+  "sources": [
+    {
+      "id": "example-editor-reference",
+      "kind": "editor",
+      "url": null,
+      "posted_at": null,
+      "retrieved_at": null,
+      "note": "Synthetic editor input for contract demonstration only."
+    }
+  ],
+  "evidence": [],
+  "related_events": [],
+  "identity_aliases": [],
+  "warnings": [
+    "Dates have not been announced; cannot approve for publication."
+  ],
+  "editor_overrides": [],
+  "decision": {
+    "status": "pending",
+    "reviewed_revision": null,
+    "reason": null,
+    "acknowledged_warnings": []
+  },
+  "history": []
+}
