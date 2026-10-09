@@ -77,7 +77,7 @@ def validate_public_record(record):
             raise ValueError("A deadline time requires a date")
 
 
-def validate_dataset(records, root=ROOT, require_decisions=False):
+def validate_dataset(records, root=ROOT, require_decisions=False, allow_pending_relations=False):
     check = validator(root)
     for event_id, record in records.items():
         if event_id != record["id"]:
@@ -87,7 +87,7 @@ def validate_dataset(records, root=ROOT, require_decisions=False):
         if require_decisions and record["decision"]["status"] in ("pending", "draft"):
             raise ValueError("Canonical PR records require an editorial decision before merge")
         for relation in record["related_events"]:
-            if relation["id"] not in records or relation["id"] == event_id:
+            if relation["id"] == event_id or (relation["id"] not in records and not allow_pending_relations):
                 raise ValueError("Dangling or self-referential related event")
         redirects = [alias[12:] for alias in record["identity_aliases"] if alias.startswith("merged-into:")]
         if redirects and (len(redirects) != 1 or redirects[0] not in records or redirects[0] == event_id
@@ -98,7 +98,7 @@ def validate_dataset(records, root=ROOT, require_decisions=False):
         if event_id in path:
             raise ValueError("Satellite relationship cycle")
         for relation in records[event_id]["related_events"]:
-            if relation["relation"] == "satellite_of":
+            if relation["relation"] == "satellite_of" and relation["id"] in records:
                 visit(relation["id"], path | {event_id})
     for event_id in records:
         visit(event_id, set())
@@ -129,6 +129,8 @@ def public_data(records):
     for event_id, record in sorted(approved.items(), key=lambda item: (item[1]["facts"]["start_date"], item[0])):
         relations = []
         for item in record["related_events"]:
+            if item["id"] not in records:
+                continue
             target = survivor(item["id"])
             remapped = {**item, "id": target}
             if target in approved and target != event_id and remapped not in relations:
@@ -142,8 +144,8 @@ def public_data(records):
     return {"schema_version": 1, "last_editorial_update": latest, "events": events}
 
 
-def export(records, destination, root=ROOT):
-    validate_dataset(records, root)
+def export(records, destination, root=ROOT, allow_pending_relations=False):
+    validate_dataset(records, root, allow_pending_relations=allow_pending_relations)
     content = json.dumps(public_data(records), indent=2, ensure_ascii=False) + "\n"
     destination.parent.mkdir(parents=True, exist_ok=True)
     temporary = destination.with_name(destination.name + ".pending")
@@ -178,14 +180,29 @@ def main(argv=None):
     parser.add_argument("--require-decisions", action="store_true")
     parser.add_argument("--export", type=Path)
     parser.add_argument("--base", help="Git ref for PR deletion/revision checks")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--github-proposal", action="store_true", help="Check pending proposals for eventual publication; merging the PR accepts them")
+    mode.add_argument("--github-merged", action="store_true", help="Verify human-merged PR receipts before exporting pending records")
     args = parser.parse_args(argv)
     try:
         records = load_registry(website_records(args.site), validator(args.root))
-        validate_dataset(records, args.root, args.require_decisions)
+        if args.github_merged:
+            from .github_review import merged_decisions
+            records = merged_decisions(records, args.site, args.root)
+        allow_relations = args.github_proposal or args.github_merged
+        validate_dataset(records, args.root, args.require_decisions and not args.github_proposal, allow_relations)
+        if args.github_proposal:
+            from .github_review import publishable_candidate
+            for event_id, record in records.items():
+                if record["decision"]["status"] in ("pending", "draft"):
+                    try:
+                        publishable_candidate(record, args.root)
+                    except ValueError as exc:
+                        raise ValueError(event_id + ": " + str(exc)) from exc
         if args.base:
             check_base(records, args.base, args.root, args.site)
         if args.export:
-            export(records, args.export, args.root)
+            export(records, args.export, args.root, allow_relations)
         print(json.dumps({"status": "valid", "records": len(records),
                           "approved": sum(r["decision"]["status"] == "approved" for r in records.values())}))
         return 0

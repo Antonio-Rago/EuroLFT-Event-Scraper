@@ -74,7 +74,7 @@ def prepare(source, root=ROOT, records_directory=None):
         prepared.append(safe_record(record))
     proposed = {**canonical, **{record["id"]: record for record in prepared}}
     validate_dataset(proposed, root)
-    identity = input_hash({"canonical": canonical, "records": prepared, "builder_version": 2})
+    identity = input_hash({"canonical": canonical, "records": prepared, "builder_version": 3})
     destination = root / "local/github-review" / ("changes-" + identity[:20])
     manifest = {"schema_version": 1, "registry_sha256": input_hash(canonical),
                 "record_ids": [record["id"] for record in prepared], "ignored_count": len(ignored),
@@ -83,7 +83,7 @@ def prepare(source, root=ROOT, records_directory=None):
     if destination.exists():
         return destination, json.loads((destination / "manifest.json").read_text())
     private_directory(destination)
-    lines = ["# Community event review", "", "Inspect every event and its source. Pending changes need an explicit editorial decision before merge.", ""]
+    lines = ["# Community event review", "", "Inspect every event and its source. Submit the next event with the collector's submit command; review and merge on GitHub to accept it.", ""]
     for record in prepared:
         save_json(destination / "changes/_event_collector/records" / (record["id"] + ".json"), record)
         facts = record["facts"]
@@ -102,14 +102,14 @@ def prepare(source, root=ROOT, records_directory=None):
                 lines.append("- Change " + md(change["field"]) + ": " + md(change["before"]) + " → " + md(change["after"]))
         lines.append("")
     lines.extend(["Validation: schema and current canonical-state checks passed. LLM extraction is not rerun during review or publication.",
-                  "", "Reject/hide by merging the exclusion record with its ID and aliases intact. Closing a PR alone is not a durable exclusion.", ""])
+                  "", "Close a collector event PR without merging to reject its event. Existing explicit rejected/hidden records remain excluded.", ""])
     (destination / "review.md").write_text("\n".join(lines), encoding="utf-8")
     (destination / "review.md").chmod(0o600)
     save_json(destination / "manifest.json", manifest)
     return destination, manifest
 
 
-def apply_package(package, root=ROOT, records_directory=None):
+def apply_package(package, root=ROOT, records_directory=None, allow_pending_relations=False):
     manifest = json.loads((package / "manifest.json").read_text())
     directory = records_directory or root / "records"
     canonical = load_registry(directory, validator(root))
@@ -125,7 +125,8 @@ def apply_package(package, root=ROOT, records_directory=None):
         records.append(record)
     if input_hash(records) != manifest["records_sha256"]:
         raise ValueError("Review package content changed; prepare it again")
-    validate_dataset({**canonical, **{record["id"]: record for record in records}}, root)
+    validate_dataset({**canonical, **{record["id"]: record for record in records}}, root,
+                     allow_pending_relations=allow_pending_relations)
     for record in records:
         safe_record(record)
     for record in records:
