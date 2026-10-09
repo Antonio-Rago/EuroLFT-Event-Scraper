@@ -1,0 +1,5 @@
+_event_collector/local/
+__pycache__/
+.venv/
+.pytest_cache/
+.event-site/
