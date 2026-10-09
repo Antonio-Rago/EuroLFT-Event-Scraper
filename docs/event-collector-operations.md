@@ -8,8 +8,9 @@ registry, review Issue form, calendar and review/publication workflows. The webs
 checks out a pinned collector commit to run validation and export; it never runs
 source collection or Gemini in its build.
 
-`_event_collector/records/*.json` in the website repository is the authoritative
-editorial registry, including approved, rejected and hidden events. The same directory
+`_event_collector/records/*.json` in the website repository stores event facts and
+stable identities. Human PR merges and closures supply the default editorial decisions;
+legacy explicit approved, rejected and hidden JSON decisions remain supported. The same directory
 name in legacy development examples does not make the collector authoritative.
 Operational reconciliation, review packaging and publication require `--site` pointing
 to a separate website checkout. A missing registry path is an error, not an empty registry.
@@ -33,6 +34,104 @@ verify billing settings. Private keys, raw messages, model responses and request
 ledgers remain in ignored collector-local storage. Preserve this state between runs.
 Update the website checkout from its reviewed main branch before reconciliation;
 resolve outstanding local editorial changes before updating it.
+
+## Weekly operating command and GitHub review
+
+Run from the scraper checkout once a week:
+
+```sh
+_event_collector/local/venv/bin/python -m tools.event_collector.weekly --live --wait --open-pr
+```
+
+The command reads **one current UTC archive month**, collects bounded upcoming INSPIRE
+Theory-HEP entries, reuses saved Gemini results and reconciles both sources against
+website main. It keeps the full candidate queue privately and opens **one event PR**
+at a time. It never merges a PR or decides which events the reviewer wants.
+
+On GitHub, read the PR summary, sources and warnings, then:
+
+- **Accept:** review and merge the PR. A teammate can use Approve first; when the PR
+  was submitted with your own GitHub login, merge it after your review.
+- **Reject:** close the PR without merging. The collector reads human closure receipts
+  and remembers the event's identity and aliases, so it does not submit it again.
+- **Correct:** edit the event JSON in GitHub or request changes before merging.
+  CI checks the corrected facts. Existing-event updates must advance their revision.
+
+No local moderation commands, approval seals, or per-event status editing are required.
+Proposal CI accepts pending records and checks whether their facts can be published.
+An undefined clock timezone or a missing required event date/type is a fact error;
+correct it in the PR before merging. A date can remain known while an unknown-zone
+clock value is set to null. Warning acknowledgement is part of reviewing and merging
+those clearly displayed warnings.
+
+The Pages workflow verifies the exact committed event against a **human-merged PR
+into EuroLFT/eurolft.github.io main** before exporting it. The merge SHA must be an
+ancestor of the build revision and the event content must match. A review on an
+unmerged PR, a bot merge, or an unrelated/later edit does not grant publication.
+Approval metadata is derived into the build's private export copy using the real
+merger and merge time. The source JSON may retain its pending proposal marker; the
+GitHub merge receipt is now authoritative. No extra bot commit changes the PR or
+invalidates the human's review. Collection and Gemini never run during a website build.
+
+Related events can be reviewed in separate PRs. Unmerged related targets remain in
+the source record and acquire public links only after both events are accepted.
+
+An existing open event PR stops the weekly command before source retrieval or Gemini.
+After merging or closing it, run the command again to submit the next candidate.
+For an already saved queue, use the submission command below to avoid recollection.
+Resolved proposal branches are cleaned up only if their SHA still matches the closed
+PR; another person's concurrent branch changes are preserved. Interrupted uploads
+can be resumed with the unchanged package. Concurrent local runs are locked.
+
+Use `--month-window previous` for the last completed UTC archive month or
+`--month 2026-09` for a specific month. This is one calendar archive, not a rolling
+30-day window. The archive month does not change INSPIRE's upcoming-event selection.
+
+Omit `--live --wait --open-pr` for a preflight with no Gemini calls or submission.
+Without `--open-pr`, a live run saves the full package locally. The default maintains
+its own clean main checkout in ignored `_event_collector/local/weekly/website` and
+preserves the operator's website checkout. `--site PATH` reads an explicit canonical
+checkout; submission always checks current website main.
+
+GitHub submission uses an existing HTTPS credential helper, or a privately configured
+`EVENT_REVIEW_TOKEN`/`GH_TOKEN` with website contents and PR write access. Secrets are
+not stored in commits, remote URLs, PR bodies or collector submission state.
+
+Partial coverage, extraction failures and quota deferrals preserve candidates locally
+and return a nonzero status without opening a PR. Rerun when capacity returns: the
+20-attempt daily cap and 60-second pacing remain. Ambiguous identities need resolution
+with `reconcile --matches` before submission. The latest live report is private at
+`_event_collector/local/weekly/latest.json`. Keep private state between runs.
+
+No recurring scheduler is enabled by these changes. The scraper's manual GitHub
+workflow uses the same submission script for INSPIRE-only preparation.
+
+## Submit the next event from an existing queue
+
+```sh
+_event_collector/local/venv/bin/python -m tools.event_collector.submit PACKAGE_DIRECTORY
+```
+
+Run this again after reviewing the preceding PR to advance the queue. Accepted and
+rejected events are skipped, while the saved queue remains intact. It prints the new
+PR URL and remaining count. Choose a particular event with `--event EVENT_ID`.
+`--batch` is available when a reviewer explicitly wants to accept an entire batch.
+
+For a local package integrity check with no GitHub access or website changes:
+
+```sh
+_event_collector/local/venv/bin/python -m tools.event_collector.submit PACKAGE_DIRECTORY \
+  --dry-run --site ../eurolft.github.io
+```
+
+The script uses dedicated private checkouts to commit only packaged event records.
+A repository maintainer can label a proposal `event-review-reset` before closing it
+for an administrative restart. This closure leaves its event eligible for another
+proposal; it is not an editorial rejection. Ordinary unmerged closures still reject
+the event.
+
+A stale saved queue cannot overwrite later human corrections. Reopen a rejected PR
+to reconsider it; closing and deleting its branch does not erase the rejection receipt.
 
 ## Select and extract one archive month
 
@@ -95,10 +194,11 @@ _event_collector/local/venv/bin/python -m tools.event_collector.review_changes P
 ```
 
 This stages no Git commit and performs no remote operation. Use a website proposal
-branch and submit its record changes as a draft PR. Reprepare if canonical decisions
+branch and submit its record changes as a review PR, or use `submit PACKAGE_DIRECTORY`
+to handle the Git and PR steps. Reprepare if canonical decisions
 or package contents change. The collector repository receives no canonical event records.
 
-## Editorial actions
+## Advanced local editorial tools (optional)
 
 The website Issue form handles missing-event suggestions and corrections; submission
 does not publish or call a model. Use the facts template at
@@ -127,8 +227,9 @@ Use `reject` or `hide` with `--reason`; reversing an exclusion requires explicit
 It creates a pending survivor and a hidden redirect; review and approve the survivor.
 
 Prepare and apply editor output with `review_changes`, always supplying `--site`.
-Merge-ready website records require explicit approved/rejected/hidden decisions.
-Merge durable exclusion records; closing a PR alone means deferred. Retain IDs instead
+The commands above remain available for explicit local decisions, restoration and
+duplicate merging. The default GitHub review flow does not require them; human closure
+of a collector event PR is now a remembered rejection. Retain IDs instead
 of deleting records. The website PR checks enforce advancing revisions, restoration
 history, current-content approval and safe publication.
 
@@ -152,22 +253,21 @@ An outage or limit produces partial coverage; it never removes or cancels events
 
 The manual "Prepare community event review" workflow belongs to this scraper
 repository. It checks out the website separately, reads its decisions, and uploads
-only a minimal INSPIRE review package. Optional draft-PR creation requires an
+only a minimal INSPIRE review package. Optional event-PR submission requires an
 `EVENT_REVIEW_TOKEN` secret explicitly permitted to write contents and PRs in the
 website repository. The scraper's default GITHUB_TOKEN cannot grant cross-repository
 write access. Without that secret, preparation still works and PR submission can use
 the operator's existing Git login.
 
-Existing website `automation/community-events` proposal branches are preserved.
-Resolve their decisions and remove a resolved branch before another automated proposal.
-The publish job rechecks latest website state and refuses partial collection. It never
-approves or merges. Private mailing-list/Gemini state stays on the local operator;
+Existing open website event PRs are preserved. The submission job rechecks current
+website state and refuses partial collection. It never accepts or merges an event.
+Closed PRs supply rejection receipts; merging supplies publication approval. Private mailing-list/Gemini state stays on the local operator;
 no public Actions cache/artifact contains raw sources or credentials.
 
 ## Website validation and private preview
 
 Website workflows check out a specific 40-character collector commit and use its tools
-to validate website records, export approved facts and audit the built site. A collector
+to validate website proposals, verify GitHub merge receipts and export accepted facts and audit the built site. A collector
 upgrade requires a website PR updating both workflow pins. Runtime cloning puts no
 collector source in the website Git tree. The temporary `.event-tools` directory is
 ignored and excluded from Jekyll.
@@ -176,7 +276,7 @@ A local approved export can be generated from here:
 
 ```sh
 _event_collector/local/venv/bin/python -m tools.event_collector.registry --site ../eurolft.github.io \
-  --require-decisions --export ../eurolft.github.io/_data/community_events.json
+  --github-merged --require-decisions --export ../eurolft.github.io/_data/community_events.json
 ```
 
 For a private pending-data preview:

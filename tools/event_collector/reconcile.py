@@ -316,7 +316,9 @@ def reconcile_records(candidates, registry, identities, choices=None):
             merged, suggestions, changed = merge_record(base, incoming)
             route["suggestions"] = suggestions
             route["changes"] = fact_changes(base["facts"], merged["facts"])
-        route["status"] = "new" if status == "new" else ("update" if changed else (
+        # The private ledger reserves identities; it is not evidence of submission.
+        # Repeated discovery must still propose a pending ID absent from the website.
+        route["status"] = "new" if status == "new" or (event_id not in registry and not changed) else ("update" if changed else (
             "protected_conflict" if route["suggestions"] else "no_change"))
         working[event_id] = merged
     # One suggested record per resolved ID, even for several announcements in a batch.
@@ -353,12 +355,17 @@ def render_plan(result, registry):
     return "\n".join(lines) + "\n"
 
 
-def prepare(bundle, root=ROOT, records_directory=None, choices=None):
+def prepare(bundle, root=ROOT, records_directory=None, choices=None, github_exclusions=None):
     root = root.resolve()
     records_directory = records_directory or root / "records"
     registry_schema = json.loads((root / "schema/event.schema.json").read_text())
     validator = Draft202012Validator(registry_schema, format_checker=FormatChecker())
     registry = load_registry(records_directory, validator)
+    github_exclusions = github_exclusions or {}
+    for record in github_exclusions.values():
+        validate_record(record, validator)
+        if record["decision"]["status"] not in ("rejected", "hidden"):
+            raise ValueError("GitHub exclusions must represent a closed/rejected event proposal.")
     manifest = json.loads((bundle / "manifest.json").read_text())
     candidates = []
     for entry in manifest["candidates"]:
@@ -385,14 +392,15 @@ def prepare(bundle, root=ROOT, records_directory=None, choices=None):
                 raise ValueError("Identity ledger mismatch")
             if value["record"]["decision"]["status"] not in ("pending", "draft"):
                 raise ValueError("Pending identity ledger cannot hold authoritative editorial decisions")
-        plan_hash = input_hash({"candidates": candidates, "registry": registry, "choices": choices or {}, "version": 1})
+        plan_hash = input_hash({"candidates": candidates, "registry": registry, "choices": choices or {},
+                               "github_exclusions": github_exclusions, "version": 3})
         destination = base / ("plan-" + plan_hash[:20])
         if destination.exists():
             saved = json.loads((destination / "plan.json").read_text())
             if saved["plan_sha256"] != plan_hash:
                 raise ValueError("Existing reconciliation plan differs")
             return destination, saved, True
-        result = reconcile_records(candidates, registry, state["identities"], choices)
+        result = reconcile_records(candidates, {**github_exclusions, **registry}, state["identities"], choices)
         for record in result["records"]:
             validate_record(record, validator)
         saved = {"schema_version": 1, "plan_sha256": plan_hash, "source_bundle": str(bundle.resolve()),

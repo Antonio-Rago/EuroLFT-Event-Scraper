@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 from .extract import private_directory
@@ -13,8 +14,11 @@ from .website import records_directory as website_records
 
 
 def run(root=ROOT, offline=False, records_directory=None):
+    from .github_exclusions import closed_rejections
+    from .submit import GitHub
+    exclusions = {} if offline else closed_rejections(GitHub(os.environ.get("GITHUB_TOKEN")), root)
     bundle, report = discover(Client(root, offline), root)
-    plan, routing, reused = reconcile(bundle, root, records_directory)
+    plan, routing, reused = reconcile(bundle, root, records_directory, github_exclusions=exclusions)
     package, manifest = changes(plan, root, records_directory)
     return package, report, manifest
 
