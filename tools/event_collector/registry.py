@@ -1,4 +1,4 @@
-"""Validate editorial state and export only sealed, approved public facts."""
+"""Validate event data locally; the website publishes per-event files with Jekyll."""
 
 import argparse
 from datetime import datetime
@@ -15,7 +15,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 from .check_corpus import input_hash
 from .extraction import ROOT
 from .reconcile import load_registry, validate_record
-from .website import records_directory as website_records
+from .website import RECORDS_PATH, LEGACY_RECORDS_PATH, from_website, records_directory as website_records
 
 
 def validator(root=ROOT):
@@ -155,14 +155,14 @@ def export(records, destination, root=ROOT, allow_pending_relations=False):
 
 def check_base(records, ref, root=ROOT, repository=None):
     repository = Path(repository).resolve() if repository is not None else root.parent
-    listing = subprocess.run(["git", "ls-tree", "-r", "--name-only", ref, "--", "_event_collector/records/"],
+    listing = subprocess.run(["git", "ls-tree", "-r", "--name-only", ref, "--", str(RECORDS_PATH) + "/", str(LEGACY_RECORDS_PATH) + "/"],
                              cwd=repository, check=True, capture_output=True, text=True).stdout.splitlines()
     for filename in listing:
         if not filename.endswith(".json"):
             continue
         content = subprocess.run(["git", "show", ref + ":" + filename], cwd=repository,
                                  check=True, capture_output=True, text=True).stdout
-        before = json.loads(content)
+        before = from_website(json.loads(content))
         after = records.get(before["id"])
         if after is None:
             raise ValueError("Keep the event ID as a hidden/rejected record instead of deleting it")
@@ -180,31 +180,25 @@ def main(argv=None):
     parser.add_argument("--require-decisions", action="store_true")
     parser.add_argument("--export", type=Path)
     parser.add_argument("--base", help="Git ref for PR deletion/revision checks")
-    mode = parser.add_mutually_exclusive_group()
-    mode.add_argument("--github-proposal", action="store_true", help="Check pending proposals for eventual publication; merging the PR accepts them")
-    mode.add_argument("--github-merged", action="store_true", help="Verify human-merged PR receipts before exporting pending records")
+    parser.add_argument("--publication", "--github-proposal", dest="publication", action="store_true",
+                        help="Validate website-ready files locally; merging their PR publishes them")
     args = parser.parse_args(argv)
     try:
         records = load_registry(website_records(args.site), validator(args.root))
-        if args.github_merged:
-            from .github_review import merged_decisions
-            records = merged_decisions(records, args.site, args.root)
-        allow_relations = args.github_proposal or args.github_merged
-        validate_dataset(records, args.root, args.require_decisions and not args.github_proposal, allow_relations)
-        if args.github_proposal:
-            from .github_review import publishable_candidate
-            for event_id, record in records.items():
-                if record["decision"]["status"] in ("pending", "draft"):
-                    try:
-                        publishable_candidate(record, args.root)
-                    except ValueError as exc:
-                        raise ValueError(event_id + ": " + str(exc)) from exc
+        allow_relations = args.publication
+        validate_dataset(records, args.root, args.require_decisions and not args.publication, allow_relations)
+        if args.publication:
+            from .review_changes import safe_record
+            for record in records.values():
+                if safe_record(record) != record:
+                    raise ValueError("Event evidence needs privacy cleanup before public review")
         if args.base:
             check_base(records, args.base, args.root, args.site)
         if args.export:
             export(records, args.export, args.root, allow_relations)
         print(json.dumps({"status": "valid", "records": len(records),
-                          "approved": sum(r["decision"]["status"] == "approved" for r in records.values())}))
+                          "listed_records": sum(r["decision"]["status"] not in ("hidden", "rejected") for r in records.values()),
+                          "excluded_records": sum(r["decision"]["status"] in ("hidden", "rejected") for r in records.values())}))
         return 0
     except Exception as exc:
         print(json.dumps({"status": "invalid_registry", "failure_type": type(exc).__name__, "reason": str(exc)

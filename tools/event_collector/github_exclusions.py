@@ -7,6 +7,7 @@ import re
 from .moderate import decide
 from .registry import validator
 from .reconcile import validate_record
+from .website import event_id_from_path, from_website
 
 RESET_LABEL = "event-review-reset"
 
@@ -45,14 +46,14 @@ def closed_rejections(client, root):
         files = pages(client, "/pulls/" + number + "/files")
         for item in files:
             filename = item["filename"]
-            if not re.fullmatch(r"_event_collector/records/event-[a-z0-9_-]+\.json", filename):
+            if not event_id_from_path(filename):
                 continue
-            if item["status"] not in ("added", "modified"):
+            if item["status"] not in ("added", "modified", "renamed"):
                 continue
             data = client.request("/contents/" + filename + "?ref=" + head["sha"])
             if data.get("encoding") != "base64":
                 raise ValueError("Closed event proposal cannot be read as JSON.")
-            record = json.loads(base64.b64decode(data["content"]).decode("utf-8"))
+            record = from_website(json.loads(base64.b64decode(data["content"]).decode("utf-8")))
             validate_record(record, validator(root))
             if record["decision"]["status"] not in ("pending", "draft"):
                 continue

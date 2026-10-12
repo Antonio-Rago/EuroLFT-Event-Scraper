@@ -14,7 +14,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 from .check_corpus import check_facts, input_hash, pointer_value
 from .extract import private_directory, save_json
 from .extraction import ROOT
-from .website import records_directory as website_records
+from .website import read_record, records_directory as website_records
 from .proposals import md
 
 
@@ -99,7 +99,7 @@ def validate_record(record, validator):
 def load_registry(directory, validator):
     result = {}
     for path in sorted(directory.glob("*.json")):
-        record = json.loads(path.read_text())
+        record = read_record(path)
         validate_record(record, validator)
         if record["id"] in result:
             raise ValueError("Duplicate canonical IDs")

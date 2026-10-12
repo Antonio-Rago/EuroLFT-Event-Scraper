@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       open_draft_pr:
-        description: 'Submit the next event for review in EuroLFT/eurolft.github.io'
+        description: 'Submit all eligible events as separate PRs in EuroLFT/eurolft.github.io'
         type: boolean
         default: false
 
@@ -32,12 +32,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install -r tools/event_collector/requirements.txt
-      - name: Preserve an existing open website proposal
-        id: existing
-        run: python -m tools.event_collector.submit --check --github-output "$GITHUB_OUTPUT"
       - name: Prepare bounded INSPIRE website review
         id: review
-        if: steps.existing.outputs.blocked != 'true'
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python -m tools.event_collector.automation --site .event-site --github-output "$GITHUB_OUTPUT"
@@ -70,7 +66,7 @@ jobs:
         with:
           name: community-event-review
           path: _event_collector/local/review-package
-      - name: Submit the next event for GitHub review
+      - name: Submit all events as separate GitHub review PRs
         env:
           GH_TOKEN: ${{ secrets.EVENT_REVIEW_TOKEN }}
-        run: python -m tools.event_collector.submit _event_collector/local/review-package
+        run: python -m tools.event_collector.submit _event_collector/local/review-package --all

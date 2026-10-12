@@ -12,7 +12,7 @@ from .extraction import ROOT
 from .proposals import md
 from .reconcile import load_registry, validate_record
 from .registry import public_url, validate_dataset, validator
-from .website import records_directory as website_records
+from .website import RECORDS_PATH, package_record, to_website, write_record, records_directory as website_records
 
 
 def safe_record(record):
@@ -73,8 +73,8 @@ def prepare(source, root=ROOT, records_directory=None):
                     raise ValueError("Restoring an exclusion requires an explicit editor restore")
         prepared.append(safe_record(record))
     proposed = {**canonical, **{record["id"]: record for record in prepared}}
-    validate_dataset(proposed, root)
-    identity = input_hash({"canonical": canonical, "records": prepared, "builder_version": 3})
+    validate_dataset(proposed, root, allow_pending_relations=True)
+    identity = input_hash({"canonical": canonical, "records": prepared, "builder_version": 4})
     destination = root / "local/github-review" / ("changes-" + identity[:20])
     manifest = {"schema_version": 1, "registry_sha256": input_hash(canonical),
                 "record_ids": [record["id"] for record in prepared], "ignored_count": len(ignored),
@@ -85,12 +85,12 @@ def prepare(source, root=ROOT, records_directory=None):
     private_directory(destination)
     lines = ["# Community event review", "", "Inspect every event and its source. Submit the next event with the collector's submit command; review and merge on GitHub to accept it.", ""]
     for record in prepared:
-        save_json(destination / "changes/_event_collector/records" / (record["id"] + ".json"), record)
+        save_json(destination / "changes" / RECORDS_PATH / (record["id"] + ".json"), to_website(record))
         facts = record["facts"]
         lines.extend(["## " + md(facts["title"]), "", "- Decision: " + md(record["decision"]["status"]),
                       "- Dates: " + md(facts["start_date"]) + " to " + md(facts["end_date"]),
                       "- Location: " + md(", ".join(value for value in facts["location"].values() if value) or "Unknown"),
-                      "- Record: `_event_collector/records/" + record["id"] + ".json`", ""])
+                      "- Record: `_data/community_events/" + record["id"] + ".json`", ""])
         for source_item in record["sources"]:
             if source_item["url"]:
                 lines.append("- Source: <" + source_item["url"] + ">")
@@ -119,7 +119,7 @@ def apply_package(package, root=ROOT, records_directory=None, allow_pending_rela
     for event_id in manifest["record_ids"]:
         if not re.fullmatch(r"[a-z0-9][a-z0-9_-]*", event_id):
             raise ValueError("Invalid package identity")
-        record = json.loads((package / "changes/_event_collector/records" / (event_id + ".json")).read_text())
+        record = package_record(package, event_id)
         if record["id"] != event_id:
             raise ValueError("Package identity mismatch")
         records.append(record)
@@ -130,7 +130,7 @@ def apply_package(package, root=ROOT, records_directory=None, allow_pending_rela
     for record in records:
         safe_record(record)
     for record in records:
-        save_json(directory / (record["id"] + ".json"), record)
+        write_record(directory, record)
     return len(records)
 
 

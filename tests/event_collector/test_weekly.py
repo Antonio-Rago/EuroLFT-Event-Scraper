@@ -41,9 +41,9 @@ class WebsiteFixture(TemporaryRoot):
     def setUp(self):
         super().setUp()
         self.site = self.root / "site"
-        self.records = self.site / "_event_collector/records"
+        self.records = self.site / "_data/community_events"
         self.records.mkdir(parents=True)
-        (self.site / "_config.yml").write_text("title: Fixture site\n")
+        (self.site / "_config.yml").write_text("title: Fixture site\ncommunity_event_data: per_event\n")
         (self.records / "README.md").write_text("Editorial state\n")
 
     def bundle(self, name, record):
@@ -80,9 +80,9 @@ class WeeklyTests(WebsiteFixture):
 
     def test_tampered_package_is_refused(self):
         package = self.package()
-        path = next((package / "changes/_event_collector/records").glob("*.json"))
+        path = next((package / "changes/_data/community_events").glob("*.json"))
         record = json.loads(path.read_text())
-        record["facts"]["title"] = "Tampered record"
+        record["title"] = "Tampered record"
         save_json(path, record)
         with self.assertRaisesRegex(ValueError, "content changed"):
             inspect_package(package, self.site, self.root)
@@ -103,7 +103,7 @@ class WeeklyTests(WebsiteFixture):
         self.assertEqual(payload["head"], BRANCH)
         paths = git("--git-dir=" + str(remote), "diff", "--name-only", "main", BRANCH).splitlines()
         self.assertEqual(len(paths), 1)
-        self.assertTrue(paths[0].startswith("_event_collector/records/event-"))
+        self.assertTrue(paths[0].startswith("_data/community_events/event-"))
         record = json.loads(git("--git-dir=" + str(remote), "show", BRANCH + ":" + paths[0]))
         self.assertEqual(record["decision"]["status"], "pending")
         self.assertFalse(list(self.records.glob("*.json")))
@@ -180,7 +180,7 @@ class WeeklyTests(WebsiteFixture):
             result = run(self.root, self.site, "2026-09", live=True)
         self.assertEqual(result["record_count"], 1)
         package = Path(result["package"])
-        record = json.loads(next((package / "changes/_event_collector/records").glob("*.json")).read_text())
+        record = json.loads(next((package / "changes/_data/community_events").glob("*.json")).read_text())
         self.assertEqual(record["decision"]["status"], "pending")
         self.assertEqual(len(record["sources"]), 2)
         self.assertFalse(list(self.records.glob("*.json")))
@@ -205,6 +205,18 @@ class WeeklyTests(WebsiteFixture):
         self.assertEqual(result["api_requests"], 0)
         collection.assert_not_called()
         extraction.assert_not_called()
+
+    def test_bulk_weekly_submission_continues_despite_existing_review(self):
+        with self.fixtures(), \
+                patch("tools.event_collector.weekly.pending_review") as waiting, \
+                patch("tools.event_collector.weekly.github_token", return_value="fixture-token"), \
+                patch("tools.event_collector.github_exclusions.closed_rejections", return_value={}), \
+                patch("tools.event_collector.weekly.submit_all", return_value={"status": "proposal_prs_created", "created_count": 1}) as submission:
+            result = run(self.root, self.site, "2026-09", live=True, open_pr=True, all_events=True)
+        waiting.assert_not_called()
+        submission.assert_called_once()
+        self.assertEqual(result["status"], "proposal_prs_created")
+        self.assertEqual(result["remote_writes"], 1)
 
     def test_editor_exclusion_is_not_resubmitted(self):
         record = candidate("proposed-mail")

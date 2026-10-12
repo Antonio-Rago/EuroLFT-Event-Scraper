@@ -14,7 +14,7 @@ from .website import records_directory as website_records
 
 def snapshot(root=ROOT, records_directory=None):
     records = load_registry(records_directory or root / "records", validator(root))
-    validate_dataset(records, root)
+    validate_dataset(records, root, allow_pending_relations=True)
     path = root / "local/reconciliation/identities.json"
     identities = json.loads(path.read_text()) if path.exists() else {"schema_version": 1, "identities": {}}
     for event_id, entry in identities["identities"].items():
@@ -32,7 +32,7 @@ def restore(value, destination, root=ROOT):
         raise ValueError("Backup integrity mismatch")
     if destination.exists():
         raise ValueError("Restore into a new directory; inspect before replacing editorial state")
-    validate_dataset(content["records"], root)
+    validate_dataset(content["records"], root, allow_pending_relations=True)
     ledger = content["pending_identity_ledger"]
     if ledger["schema_version"] != 1:
         raise ValueError("Unknown pending ledger version")

@@ -21,10 +21,10 @@ class SeparateWebsiteTests(TemporaryRoot):
     def setUp(self):
         super().setUp()
         self.site = self.root / "website"
-        self.records = self.site / "_event_collector/records"
+        self.records = self.site / "_data/community_events"
         self.records.mkdir(parents=True)
-        (self.site / "_config.yml").write_text("title: Fixture website\n")
-        save_json(self.site / "_data/community_events.json", {"schema_version": 1, "events": []})
+        (self.site / "_config.yml").write_text("title: Fixture website\ncommunity_event_data: per_event\n")
+        # Jekyll reads the individual event files directly.
 
     def bundle(self, record):
         directory = self.root / "local/review/fixture"
@@ -57,11 +57,11 @@ class SeparateWebsiteTests(TemporaryRoot):
         save_json(editor / (approved["id"] + ".json"), approved)
         package, _ = changes(editor, self.root, self.records)
         self.assertEqual(apply_package(package, self.root, self.records), 1)
-        output = self.site / "_data/community_events.json"
+        output = self.records / (approved["id"] + ".json")
+        self.assertEqual(json.loads(output.read_text())["title"], approved["facts"]["title"])
+        self.assertNotIn("facts", json.loads(output.read_text()))
         with redirect_stdout(io.StringIO()):
-            self.assertEqual(registry_main(["--root", str(self.root), "--site", str(self.site),
-                                           "--require-decisions", "--export", str(output)]), 0)
-        self.assertEqual(len(json.loads(output.read_text())["events"]), 1)
+            self.assertEqual(registry_main(["--root", str(self.root), "--site", str(self.site), "--publication"]), 0)
         self.assertFalse((self.root / "records").exists())
         self.assertFalse((self.root / "_data").exists())
 
@@ -84,12 +84,12 @@ class SeparateWebsiteTests(TemporaryRoot):
         record = candidate()
         save_json(plan / (record["id"] + ".json"), record)
         save_json(plan / "plan.json", {"record_ids": [record["id"]]})
-        public = (self.site / "_data/community_events.json").read_bytes()
+        public = list(self.records.glob("*.json"))
         configuration = preview(plan, self.root, self.site)
         self.assertEqual(configuration.parent, (self.site / "_event_collector/local").resolve())
         data = json.loads(configuration.read_text())
         self.assertTrue(data["community_preview"])
-        self.assertEqual((self.site / "_data/community_events.json").read_bytes(), public)
+        self.assertEqual(list(self.records.glob("*.json")), public)
         self.assertFalse((self.root / "local/preview-data").exists())
 
     def test_cli_requires_an_explicit_website_checkout(self):
