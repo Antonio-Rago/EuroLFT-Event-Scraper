@@ -17,6 +17,7 @@ from .reconcile import validate_record
 from .registry import public_url, validator
 
 ENDPOINT = "https://inspirehep.net/api/conferences"
+DEFAULT_SUBJECT = "lattice"
 
 
 class Client:
@@ -105,7 +106,7 @@ def map_record(hit, retrieved_at=None):
     elif urls:
         warnings.append("Several catalogue URLs: select an organiser link manually.")
     if "lattice" not in title:
-        warnings.append("Broad Theory-HEP candidate: relevance requires human review.")
+        warnings.append("Title does not explicitly mention lattice: relevance requires human review.")
     record = {"schema_version": 1, "id": "proposed-inspire-" + event_id,
               "revision": 1, "origin": "collected", "facts": facts,
               "sources": [{"id": source_id, "kind": "announcement",
@@ -120,7 +121,7 @@ def map_record(hit, retrieved_at=None):
     return record
 
 
-def discover(client, root=ROOT, query=None, page_size=25, max_pages=6, max_records=100, subject="theory-hep"):
+def discover(client, root=ROOT, query=None, page_size=25, max_pages=6, max_records=100, subject=DEFAULT_SUBJECT):
     if not 1 <= page_size <= 100 or not 1 <= max_pages <= 20 or not 1 <= max_records <= 500:
         raise ValueError("Invalid INSPIRE collection bounds")
     if subject not in ("theory-hep", "lattice"):
@@ -199,8 +200,8 @@ def discover(client, root=ROOT, query=None, page_size=25, max_pages=6, max_recor
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=ROOT)
-    parser.add_argument("--query", help="Optional query, e.g. lattice; default keeps the broad Theory-HEP selection")
-    parser.add_argument("--subject", choices=("theory-hep", "lattice"), default="theory-hep")
+    parser.add_argument("--query", help="Optional extra search terms within the selected subject")
+    parser.add_argument("--subject", choices=("theory-hep", "lattice"), default=DEFAULT_SUBJECT)
     parser.add_argument("--page-size", type=int, default=25)
     parser.add_argument("--max-pages", type=int, default=6)
     parser.add_argument("--max-records", type=int, default=100)

@@ -1,4 +1,4 @@
-"""GitHub decisions require a real matching merge, never a synthetic approval."""
+"""Event queues and actual rejection receipts preserve editorial identities."""
 
 import base64
 import copy
@@ -10,120 +10,11 @@ from test_weekly import WebsiteFixture, FakeGitHub
 from test_workflow import TemporaryRoot, candidate
 from tools.event_collector.extract import save_json
 from tools.event_collector.github_exclusions import closed_rejections
-from tools.event_collector.github_review import merged_decisions, publishable_candidate
 from tools.event_collector.reconcile import prepare as reconcile
 from tools.event_collector.registry import public_data, validate_dataset
 from tools.event_collector.review_changes import prepare as changes
+from tools.event_collector.website import package_record
 from tools.event_collector.submit import BRANCH, REMOTE, git, next_package, submit
-
-
-class ReceiptClient:
-    def __init__(self, pull):
-        self.pull = pull
-        self.calls = []
-
-    def request(self, path):
-        self.calls.append(path)
-        if path.startswith("/commits/"):
-            return [{"number": self.pull["number"], "merged_at": self.pull["merged_at"], "base": self.pull["base"]}]
-        if path == "/pulls/23":
-            return self.pull
-        raise AssertionError(path)
-
-
-class GitHubReceiptTests(TemporaryRoot):
-    def setUp(self):
-        super().setUp()
-        self.site = self.root / "site"
-        self.site.mkdir()
-        self.record = candidate("event-proof")
-        self.path = self.site / "_event_collector/records/event-proof.json"
-        save_json(self.path, self.record)
-        for args in (("init", "-q", "-b", "main"), ("config", "user.name", "Fixture"),
-                     ("config", "user.email", "fixture@example.invalid"), ("add", "."),
-                     ("commit", "-qm", "Proposal fixture"), ("remote", "add", "origin", REMOTE)):
-            git(*args, cwd=self.site)
-        self.commit = git("rev-parse", "HEAD", cwd=self.site)
-        self.pull = {"number": 23, "merged": True, "merged_at": "2026-10-09T12:00:00Z",
-                     "merged_by": {"type": "User", "login": "fixture-reviewer"},
-                     "merge_commit_sha": self.commit, "html_url": "https://github.com/EuroLFT/eurolft.github.io/pull/23",
-                     "base": {"ref": "main", "repo": {"full_name": "EuroLFT/eurolft.github.io"}}}
-
-    def test_merge_receipt_approves_only_an_export_copy_and_uses_real_reviewer(self):
-        before = self.path.read_bytes()
-        records = {self.record["id"]: self.record}
-        result = merged_decisions(records, self.site, self.root, ReceiptClient(self.pull))
-        approved = result[self.record["id"]]
-        validate_dataset(result, self.root, require_decisions=True)
-        self.assertEqual(approved["history"][-1]["actor"], "fixture-reviewer")
-        self.assertEqual(approved["history"][-1]["at"], self.pull["merged_at"])
-        self.assertEqual(len(public_data(result)["events"]), 1)
-        self.assertEqual(self.path.read_bytes(), before)
-        self.assertEqual(self.record["decision"]["status"], "pending")
-
-    def test_actions_checkout_remote_without_dot_git_is_supported(self):
-        git("remote", "set-url", "origin", REMOTE[:-4], cwd=self.site)
-        result = merged_decisions({self.record["id"]: self.record}, self.site, self.root, ReceiptClient(self.pull))
-        self.assertEqual(result[self.record["id"]]["decision"]["status"], "approved")
-
-    def test_an_approved_but_unmerged_pr_cannot_publish(self):
-        self.pull.update(merged=False, merged_at=None)
-        with self.assertRaisesRegex(ValueError, "no matching human-merged"):
-            merged_decisions({self.record["id"]: self.record}, self.site, self.root, ReceiptClient(self.pull))
-
-    def test_bot_merge_wrong_repository_or_other_base_cannot_approve(self):
-        for path, value in (("actor", {"type": "Bot", "login": "fixture-bot"}),
-                            ("repository", "other/website"), ("base", "other-branch")):
-            with self.subTest(path=path):
-                pull = copy.deepcopy(self.pull)
-                if path == "actor":
-                    pull["merged_by"] = value
-                elif path == "repository":
-                    pull["base"]["repo"]["full_name"] = value
-                else:
-                    pull["base"]["ref"] = value
-                with self.assertRaises(ValueError):
-                    merged_decisions({self.record["id"]: self.record}, self.site, self.root, ReceiptClient(pull))
-
-    def test_dirty_or_later_changed_content_cannot_inherit_an_older_approval(self):
-        changed = copy.deepcopy(self.record)
-        changed["facts"]["title"] = "Changed after approval"
-        save_json(self.path, changed)
-        with self.assertRaisesRegex(ValueError, "Uncommitted"):
-            merged_decisions({changed["id"]: changed}, self.site, self.root, ReceiptClient(self.pull))
-        git("add", ".", cwd=self.site)
-        git("commit", "-qm", "Unreviewed change", cwd=self.site)
-        with self.assertRaisesRegex(ValueError, "no matching human-merged"):
-            merged_decisions({changed["id"]: changed}, self.site, self.root, ReceiptClient(self.pull))
-
-    def test_merge_from_an_unrelated_git_history_cannot_approve(self):
-        git("checkout", "--orphan", "unrelated", cwd=self.site)
-        git("commit", "-qm", "Unrelated merge", cwd=self.site)
-        self.pull["merge_commit_sha"] = git("rev-parse", "HEAD", cwd=self.site)
-        git("checkout", "main", cwd=self.site)
-        with self.assertRaises(ValueError):
-            merged_decisions({self.record["id"]: self.record}, self.site, self.root, ReceiptClient(self.pull))
-
-    def test_unknown_clock_timezone_still_requires_a_fact_correction(self):
-        changed = copy.deepcopy(self.record)
-        changed["facts"]["start_time"] = "09:00"
-        with self.assertRaisesRegex(ValueError, "IANA timezone"):
-            publishable_candidate(changed, self.root)
-        self.assertEqual(changed["decision"]["status"], "pending")
-
-    def test_a_related_event_can_wait_for_its_own_pr_without_a_broken_public_link(self):
-        record = copy.deepcopy(self.record)
-        record["related_events"] = [{"id": "event-other-proposal", "relation": "satellite_of"}]
-        validate_dataset({record["id"]: record}, self.root, allow_pending_relations=True)
-        with self.assertRaisesRegex(ValueError, "Dangling"):
-            validate_dataset({record["id"]: record}, self.root)
-        # A real merge receipt is recorded before exporting the event.
-        save_json(self.path, record)
-        git("add", ".", cwd=self.site)
-        git("commit", "-qm", "Related proposal", cwd=self.site)
-        self.pull["merge_commit_sha"] = git("rev-parse", "HEAD", cwd=self.site)
-        result = merged_decisions({record["id"]: record}, self.site, self.root, ReceiptClient(self.pull))
-        self.assertFalse(public_data(result)["events"][0]["related_events"])
 
 
 class ClosedClient:
@@ -141,7 +32,7 @@ class ClosedClient:
             return [{"event": "closed", "created_at": "2026-10-09T13:00:00Z",
                      "actor": {"type": "User" if self.human else "Bot", "login": "fixture-reviewer"}}]
         if path.startswith("/pulls/42/files"):
-            return [{"filename": "_event_collector/records/" + self.record["id"] + ".json", "status": "added"}]
+            return [{"filename": "_data/community_events/" + self.record["id"] + ".json", "status": "added"}]
         if path.startswith("/contents/"):
             return {"encoding": "base64", "content": base64.b64encode(json.dumps(self.record).encode()).decode()}
         raise AssertionError(path)
@@ -221,7 +112,7 @@ class SingleEventQueueTests(WebsiteFixture):
         package = self.two_events()
         first, manifest = next_package(package, self.site, self.root)
         identity = manifest["record_ids"][0]
-        save_json(self.records / (identity + ".json"), json.loads((first / "changes/_event_collector/records" / (identity + ".json")).read_text()))
+        save_json(self.records / (identity + ".json"), package_record(first, identity))
         second, remaining = next_package(package, self.site, self.root)
         self.assertEqual(len(remaining["record_ids"]), 1)
         self.assertNotEqual(remaining["record_ids"][0], identity)
@@ -251,7 +142,7 @@ class SingleEventQueueTests(WebsiteFixture):
         package = self.two_events()
         first, manifest = next_package(package, self.site, self.root)
         identity = manifest["record_ids"][0]
-        record = json.loads((first / "changes/_event_collector/records" / (identity + ".json")).read_text())
+        record = package_record(first, identity)
         exclusions = closed_rejections(ClosedClient(record), self.root)
         _, remaining = next_package(package, self.site, self.root, exclusions)
         self.assertNotIn(identity, remaining["record_ids"])
@@ -260,7 +151,7 @@ class SingleEventQueueTests(WebsiteFixture):
         package = self.two_events()
         first, manifest = next_package(package, self.site, self.root)
         identity = manifest["record_ids"][0]
-        record = json.loads((first / "changes/_event_collector/records" / (identity + ".json")).read_text())
+        record = package_record(first, identity)
         record["facts"]["summary"] = "Later human correction"
         record["revision"] += 1
         save_json(self.records / (identity + ".json"), record)

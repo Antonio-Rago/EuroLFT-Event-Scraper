@@ -10,6 +10,7 @@ from .check_corpus import pointer_value
 from .extract import save_json, timestamp
 from .extraction import ROOT
 from .reconcile import aliases, merge_record, validate_record
+from .website import from_website
 from .registry import review_hash, validate_public_record, validator
 
 
@@ -126,6 +127,7 @@ def main(argv=None):
         if args.action == "manual":
             records = [manual(original, args.actor)]
         else:
+            original = from_website(original)
             validate_record(original, validator())
             if args.action == "edit":
                 if not args.patch:
@@ -134,7 +136,7 @@ def main(argv=None):
             elif args.action == "merge":
                 if not args.duplicate:
                     raise ValueError("A merge requires --duplicate")
-                duplicate = json.loads(args.duplicate.read_text())
+                duplicate = from_website(json.loads(args.duplicate.read_text()))
                 validate_record(duplicate, validator())
                 records = list(merge_duplicate(original, duplicate, args.actor)[:2])
             else:

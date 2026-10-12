@@ -1,4 +1,4 @@
-"""Collect one archive month plus INSPIRE, reconcile, and optionally submit a draft PR."""
+"""Collect one archive month plus INSPIRE and propose events for GitHub review."""
 
 import argparse
 import fcntl
@@ -14,7 +14,7 @@ from .ingest import archive_month, inputs_for_month, process
 from .inspire import Client, discover
 from .reconcile import prepare as reconcile
 from .review_changes import prepare as changes
-from .submit import REMOTE, GitHub, git, github_token, pending_review, submit
+from .submit import REMOTE, GitHub, git, github_token, pending_review, submit, submit_all
 from .website import records_directory
 
 
@@ -58,7 +58,7 @@ def canonical_site(root):
 
 
 def run(root=ROOT, site=None, month=None, month_window="current", live=False,
-        wait=False, offline=False, limit=50, open_pr=False, batch=False):
+        wait=False, offline=False, limit=50, open_pr=False, batch=False, all_events=False):
     root = Path(root).resolve()
     private_directory(root / "local/weekly")
     descriptor = os.open(root / "local/weekly/run.lock", os.O_CREAT | os.O_RDWR, 0o600)
@@ -70,7 +70,9 @@ def run(root=ROOT, site=None, month=None, month_window="current", live=False,
             return {"status": "already_running", "api_requests": 0, "automatic_approval": False}
         if open_pr and not live:
             raise ValueError("--open-pr requires --live; preflight never submits records.")
-        if open_pr:
+        if all_events and (batch or not open_pr):
+            raise ValueError("--all requires --open-pr and cannot be combined with --batch.")
+        if open_pr and not all_events:
             waiting = pending_review()
             if waiting:
                 return {**waiting, "api_requests": 0}
@@ -82,7 +84,7 @@ def run(root=ROOT, site=None, month=None, month_window="current", live=False,
             if offline:
                 raise ValueError("--offline requires an explicit --site; no remote checkout update is allowed.")
             site = canonical_site(root)
-        directory = records_directory(site)
+        directory = records_directory(site, require_ready=open_pr)
         month = month or recent_month(month_window)
         collection = collect([month], root / "local", Fetcher(root / "local/cache", offline=offline), limit, 8)
         bundle, extraction = process(inputs_for_month(root, month, limit), root, live, wait=wait)
@@ -109,8 +111,8 @@ def run(root=ROOT, site=None, month=None, month_window="current", live=False,
         elif report["identity_review_count"]:
             report["status"] = "identity_review_required"
         elif open_pr:
-            report.update(submit(package, root, batch=batch))
-            report["remote_writes"] = int(report["status"] == "proposal_pr_created")
+            report.update(submit_all(package, root) if all_events else submit(package, root, batch=batch))
+            report["remote_writes"] = report.get("created_count", int(report["status"] == "proposal_pr_created"))
         save_json(root / "local/weekly/latest.json", report)
         return report
 
@@ -126,13 +128,15 @@ def main(argv=None):
     parser.add_argument("--live", action="store_true", help="Permit bounded Gemini extraction; otherwise preflight only")
     parser.add_argument("--wait", action="store_true", help="Pace new Gemini requests, up to the existing daily limit")
     parser.add_argument("--offline", action="store_true", help="Use cached source responses; --live still permits model requests")
-    parser.add_argument("--open-pr", action="store_true", help="Submit the next event for GitHub review; merging accepts it")
-    parser.add_argument("--batch", action="store_true", help="Review all queued events together in one PR")
+    parser.add_argument("--open-pr", action="store_true", help="Open event review PRs; use --all for every queued event")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--all", dest="all_events", action="store_true", help="Submit every queued event as a separate PR; requires --open-pr")
+    mode.add_argument("--batch", action="store_true", help="Review all queued events together in one PR")
     args = parser.parse_args(argv)
     try:
         report = run(**vars(args))
         print(json.dumps(report, indent=2))
-        return 0 if report["status"] in ("preflight", "prepared", "proposal_pr_created", "no_changes", "awaiting_review", "already_running") else 1
+        return 0 if report["status"] in ("preflight", "prepared", "proposal_pr_created", "proposal_prs_created", "no_changes", "awaiting_review", "already_running") else 1
     except Exception as exc:
         print(json.dumps({"status": "weekly_run_failed", "failure_type": type(exc).__name__,
                           "reason": str(exc) if type(exc) is ValueError else "Inspect private source state or retry after a network failure."}))

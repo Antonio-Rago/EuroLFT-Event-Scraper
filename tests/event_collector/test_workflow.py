@@ -19,6 +19,7 @@ from tools.event_collector.inspire import blank_facts, discover, map_record
 from tools.event_collector.moderate import decide, edit, manual, merge_duplicate
 from tools.event_collector.reconcile import prepare as reconcile, reconcile_records
 from tools.event_collector.registry import check_base, export, public_data, public_url, validate_dataset
+from tools.event_collector.website import from_website
 from tools.event_collector.review_changes import apply_package, prepare as changes
 from tools.event_collector.replay_fixtures import fixture_result
 
@@ -109,9 +110,9 @@ class EditorialTests(TemporaryRoot):
         editor = self.root / "local/editor"
         save_json(editor / (record["id"] + ".json"), record)
         package, manifest = changes(editor, self.root)
-        shared = json.loads((package / "changes/_event_collector/records" / (record["id"] + ".json")).read_text())
+        shared = json.loads((package / "changes/_data/community_events" / (record["id"] + ".json")).read_text())
         output = self.root / "public.json"
-        export({shared["id"]: shared}, output, self.root)
+        export({shared["id"]: from_website(shared)}, output, self.root)
         data = json.loads(output.read_text())
         self.assertEqual(len(data["events"]), 1)
         self.assertNotIn("history", data["events"][0])
@@ -161,7 +162,7 @@ class EditorialTests(TemporaryRoot):
 
     def test_base_check_blocks_deletion_and_unchanged_revision(self):
         before = candidate()
-        responses = [type("Result", (), {"stdout": "_event_collector/records/event-test.json\n"})(),
+        responses = [type("Result", (), {"stdout": "_data/community_events/event-test.json\n"})(),
                      type("Result", (), {"stdout": json.dumps(before)})()]
         with patch("tools.event_collector.registry.subprocess.run", side_effect=responses):
             with self.assertRaisesRegex(ValueError, "instead of deleting"):
@@ -291,17 +292,17 @@ class ReviewChangesTests(TemporaryRoot):
                                "excerpt": "Contact private@example.org for details"}]
         save_json(path, record)
         package, manifest = changes(plan, self.root)
-        shared = json.loads((package / "changes/_event_collector/records" / path.name).read_text())
+        shared = json.loads((package / "changes/_data/community_events" / path.name).read_text())
         self.assertFalse(shared["evidence"])
         self.assertTrue(any("omitted" in warning for warning in shared["warnings"]))
 
     def test_package_apply_checks_integrity_and_canonical_state(self):
         plan = self.plan()
         package, manifest = changes(plan, self.root)
-        record_path = package / "changes/_event_collector/records" / (manifest["record_ids"][0] + ".json")
+        record_path = package / "changes/_data/community_events" / (manifest["record_ids"][0] + ".json")
         original = record_path.read_bytes()
         record = json.loads(original)
-        record["facts"]["title"] = "Unreviewed package change"
+        record["title"] = "Unreviewed package change"
         save_json(record_path, record)
         with self.assertRaisesRegex(ValueError, "content changed"):
             apply_package(package, self.root)

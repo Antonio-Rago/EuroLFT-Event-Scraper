@@ -9,7 +9,7 @@ from .extract import save_json
 from .extraction import ROOT
 from .reconcile import validate_record
 from .registry import validator
-from .website import records_directory as website_records
+from .website import to_website, records_directory as website_records
 
 
 def prepare(plan, root=ROOT, site=None):
@@ -23,11 +23,15 @@ def prepare(plan, root=ROOT, site=None):
         validate_record(record, validator(root))
     data = preview_root / "local/preview-data"
     shutil.copytree(website / "_data", data, dirs_exist_ok=True)
-    events = [{"id": record["id"], **record["facts"],
-               "sources": [source["url"] for source in record["sources"] if source["url"]],
-               "related_events": record["related_events"]} for record in records]
-    events.sort(key=lambda value: (value["start_date"] or "9999", value["id"]))
-    save_json(data / "community_events.json", {"schema_version": 1, "last_editorial_update": None, "events": events})
+    # Preview only the selected proposals in an isolated data directory.
+    aggregate = data / "community_events.json"
+    if aggregate.exists():
+        aggregate.unlink()
+    if (data / "community_events").exists():
+        shutil.rmtree(data / "community_events")
+    (data / "community_events").mkdir()
+    for record in records:
+        save_json(data / "community_events" / (record["id"] + ".json"), to_website(record))
     configuration = preview_root / "local/preview.yml"
     save_json(configuration, {"community_preview": True,
                              "data_dir": str(data.relative_to(website)),

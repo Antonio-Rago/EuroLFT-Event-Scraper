@@ -1,28 +1,28 @@
 # EuroLFT Event Scraper
 
-Collector and editorial tooling for the lattice-community event calendar.
+Collect lattice-community announcements and prepare one website-ready JSON file per
+event for review in [EuroLFT/eurolft.github.io](https://github.com/EuroLFT/eurolft.github.io).
+All scraping, Gemini extraction, reconciliation and Python code live in this separate
+repository. The website runs Ruby/Jekyll only and reads the prepared files directly.
 
-This repository owns the Python source, tests, prompts, schemas, source adapters and
-collection workflows. [EuroLFT/eurolft.github.io](https://github.com/EuroLFT/eurolft.github.io)
-owns event records, GitHub review and calendar publication. Human PR merges and
-closures in the website repository supply acceptance and rejection receipts.
-
-Private keys, raw announcements, model responses, cached requests and pending
-identity/quota state stay in ignored `_event_collector/local/` storage here.
-
-See [the operating guide](docs/event-collector-operations.md) for setup, monthly
-ingestion and the `--site` connection to a separate website checkout. The website
-checks out a pinned version of these tools for validation and publication; it stores
-no collector source and never runs collection or Gemini during its build.
-
-After setup, run the full weekly collection-to-event-PR workflow from this checkout:
+Run from this checkout after the one-time website migration:
 
 ```sh
-_event_collector/local/venv/bin/python -m tools.event_collector.weekly --live --wait --open-pr
+_event_collector/local/venv/bin/python -m tools.event_collector.weekly --live --wait --open-pr --all
 ```
 
-It combines one mailing-list archive month with INSPIRE and submits one event per PR.
-Review and merge on GitHub to accept; close without merging to reject. No local
-per-event approval commands are required.
-Omit these flags for preflight only. Use `tools.event_collector.submit PACKAGE_DIRECTORY`
-to upload an existing validated package without repeating collection or model calls.
+This reads one current archive month plus upcoming INSPIRE **Lattice** conferences.
+It reuses cached Gemini extraction and opens every eligible event as its own PR.
+Use `--month YYYY-MM` or `--month-window previous` to select another archive month.
+Accepted, rejected and already-open events are skipped; reviewer edits are preserved.
+Review and merge to publish, or close without merging to reject. No approval commands,
+website Python checkout, aggregate-file update or merge-receipt API lookup is needed.
+
+Submit a saved queue without recollecting or calling Gemini:
+
+```sh
+_event_collector/local/venv/bin/python -m tools.event_collector.submit PACKAGE_DIRECTORY --all
+```
+
+See [the operating guide](docs/event-collector-operations.md) for credentials, migration,
+manual additions, corrections, backups and private previews. No recurring schedule is enabled.

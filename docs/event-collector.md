@@ -1,3 +1,7 @@
+> Historical design and extraction notes. The current direct-Jekyll publication and
+> operating commands are in [event-collector-operations.md](event-collector-operations.md).
+> Earlier approval/export and website-directory examples below are superseded.
+
 # Community events: Step 1 contract
 
 > Collector code now lives in this separate repository. Earlier development commands
