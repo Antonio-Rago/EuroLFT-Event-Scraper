@@ -100,8 +100,22 @@ archive, not a rolling thirty-day query. INSPIRE uses `subject=lattice`, 25 resu
 per page, at most six pages and 100 records; relevance remains a human review question.
 
 Partial source coverage, model failures and quota deferrals preserve the useful data
-locally and return a nonzero status before submission. Existing 20-attempt daily and
-60-second request-pacing limits remain. Rerun later to reuse completed extraction.
+locally. With `--open-pr`, independently validated events are still submitted; one
+unresolved announcement does not block other event PRs. The summary retains
+`status: partial`, `coverage_complete: false` and a nonzero exit code until coverage
+is complete. Check `submission_status`, `remote_writes` and the PR links to see what
+was submitted. `extraction_issues` lists announcements needing repair, and
+`extraction_review` points to the private detailed report. Identity conflicts still
+require resolution before submission. Existing 20-attempt daily and 60-second
+request-pacing limits remain. Rerun to reuse completed extraction.
+
+Saved model failures with parsed event facts are reconsidered locally without another
+Gemini request. In particular, a draft timezone `JST` is represented as `Asia/Tokyo`
+only when a verified quotation supporting that exact timezone field explicitly says
+`JST (UTC+9)`. The draft includes a review warning; the original saved model reply and
+its integrity hash remain unchanged. Unsupported or ambiguous zones remain repair
+items. This also lets an already listed event acquire a newly announced deadline
+through an ordinary correction PR.
 No scheduler is enabled. The scraper's optional Actions workflow prepares INSPIRE data
 and uses the same separate-PR submission logic with an explicit cross-repository token.
 

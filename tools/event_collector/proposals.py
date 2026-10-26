@@ -1,6 +1,7 @@
 """Prepare local, pending review drafts from saved extractions; no API or Git writes."""
 
 import argparse
+import copy
 import html
 import json
 import os
@@ -53,8 +54,32 @@ def load_artifact(entry, run, record, root, schema, prompt):
     return artifact
 
 
+def normalize_timezones(event, record):
+    """Resolve an explicit JST/UTC+9 quotation without changing saved model output."""
+    fields = [("/facts/timezone", event["facts"])]
+    fields += [("/facts/deadlines/" + str(index) + "/timezone", deadline)
+               for index, deadline in enumerate(event["facts"]["deadlines"])]
+    changes = []
+    for pointer, facts in fields:
+        if facts["timezone"] != "JST":
+            continue
+        for evidence in event["evidence"]:
+            if pointer not in evidence["supports"]:
+                continue
+            try:
+                span = source_span(evidence, record)
+            except ValueError:
+                continue
+            if re.search(r"\bJST\s*\(\s*UTC\s*\+\s*0?9(?::?00)?\s*\)", span["quote"]):
+                facts["timezone"] = "Asia/Tokyo"
+                changes.append(pointer)
+                break
+    return changes
+
+
 def build_drafts(artifact, record, registry, schema):
-    result = artifact["result"]
+    # Repair only a draft copy; provenance hashes cover the immutable model reply.
+    result = copy.deepcopy(artifact["result"])
     Draft202012Validator(schema).validate(result)
     if result["disposition"] != ("event_candidates" if result["events"] else "no_event"):
         raise ValueError("Contradictory extraction disposition")
@@ -69,8 +94,9 @@ def build_drafts(artifact, record, registry, schema):
     facts_validator = Draft202012Validator({"$ref": "#/$defs/facts", "$defs": registry["$defs"]},
                                           format_checker=FormatChecker())
     ids = {local_id: "proposed-" + artifact["request_sha256"][:20] + "-" + local_id for local_id in local_ids}
-    drafts, repairs = [], []
+    drafts, repairs, normalizations = [], [], {}
     for event in result["events"]:
+        normalizations[event["local_id"]] = normalize_timezones(event, record)
         try:
             facts_validator.validate(event["facts"])
             check_facts(event["facts"])
@@ -87,6 +113,10 @@ def build_drafts(artifact, record, registry, schema):
             item = {"code": code, "field": field, "message": message}
             if item not in issues:
                 issues.append(item)
+
+        for pointer in normalizations[event["local_id"]]:
+            issue("timezone_normalized", pointer,
+                  "Source explicitly states JST (UTC+9); represented as Asia/Tokyo. Verify during review.")
 
         def proof(value, pointers):
             try:

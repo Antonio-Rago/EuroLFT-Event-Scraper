@@ -9,7 +9,7 @@ import unittest
 from tools.event_collector.check_corpus import input_hash
 from tools.event_collector.extract import Quota, extract_one, save_json
 from tools.event_collector.extraction import ROOT, MODEL, PROMPT_VERSIONS, load_contract
-from tools.event_collector.proposals import prepare, md
+from tools.event_collector.proposals import build_drafts, normalize_timezones, prepare, md
 from tools.event_collector.replay_fixtures import fixture_result
 
 
@@ -120,6 +120,51 @@ class ProposalTests(unittest.TestCase):
         self.assertEqual(manifest["candidate_count"], 1)
         self.assertEqual(manifest["cases"][0]["repairs"][0]["local_id"], "e1")
         self.assertEqual(self.records(directory)[0]["facts"], second["facts"])
+
+    def timezone_fixture(self, source_quote="Deadline: November 1, 2026, 23:59 JST (UTC+9)"):
+        self.record["body"] += "\n" + source_quote
+        event = self.result["events"][0]
+        event["facts"]["deadlines"] = [{"kind": "abstract", "label": "Call for proposals",
+            "date": "2026-11-01", "time": "23:59", "timezone": "JST"}]
+        event["evidence"].append({"source_field": "body", "link_index": None, "quote": source_quote,
+            "supports": ["/facts/deadlines/0/timezone"], "derivation": None})
+        return event
+
+    def test_explicit_jst_offset_is_normalized_only_in_draft_copy(self):
+        self.timezone_fixture()
+        artifact = {"result": self.result, "request_sha256": "a" * 64,
+                    "input_sha256": input_hash(self.record), "model": MODEL,
+                    "validation_error": {"failure_type": "ZoneInfoNotFoundError"}}
+        before = copy.deepcopy(artifact)
+        drafts, repairs = build_drafts(artifact, self.record, self.registry, self.schema)
+        self.assertFalse(repairs)
+        self.assertEqual(artifact, before)
+        self.assertEqual(drafts[0]["record"]["facts"]["deadlines"][0]["timezone"], "Asia/Tokyo")
+        self.assertEqual(drafts[0]["original_validation"], "failed")
+        self.assertEqual(drafts[0]["record"]["decision"]["status"], "pending")
+        self.assertTrue(any("timezone_normalized" in warning for warning in drafts[0]["record"]["warnings"]))
+
+    def test_timezone_repair_requires_matching_field_evidence_and_explicit_offset(self):
+        for missing in ("offset", "matching_quote", "field_pointer", "ambiguous_alias"):
+            with self.subTest(missing=missing):
+                event = self.timezone_fixture()
+                if missing == "offset":
+                    event["evidence"][-1]["quote"] = "23:59 JST"
+                elif missing == "matching_quote":
+                    event["evidence"][-1]["quote"] = "Invented JST (UTC+9)"
+                elif missing == "field_pointer":
+                    event["evidence"][-1]["supports"] = ["/facts/deadlines/0/date"]
+                else:
+                    event["facts"]["deadlines"][0]["timezone"] = "CST"
+                before = copy.deepcopy(event)
+                self.assertEqual(normalize_timezones(event, self.record), [])
+                self.assertEqual(event, before)
+                event["evidence"].pop()
+
+    def test_wrong_jst_offset_is_not_normalized(self):
+        event = self.timezone_fixture("Deadline: 23:59 JST (UTC+8)")
+        self.assertEqual(normalize_timezones(event, self.record), [])
+        self.assertEqual(event["facts"]["deadlines"][0]["timezone"], "JST")
 
     def test_repeat_preserves_manual_edits(self):
         path = self.run_file()
