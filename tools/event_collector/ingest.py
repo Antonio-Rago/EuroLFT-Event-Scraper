@@ -111,12 +111,14 @@ def process(inputs, root=ROOT, live=False, transport=None, wait=False):
               "candidates": [{"id": draft["record"]["id"]} for draft in drafts]}
     if not live:
         return None, report
+    report["status"] = "partial" if any(
+        case["status"] not in ("pending_review", "no_event") or case.get("repairs") for case in cases) else "success"
     # Stable content identity, independent of the number of API calls or today's timestamp.
     version = input_hash({"inputs": inputs, "cases": cases, "records": [d["record"] for d in drafts]})
     destination = root / "local/review" / ("ingest-" + version[:20])
     if destination.exists():
         saved = json.loads((destination / "manifest.json").read_text())
-        return destination, {**saved, "api_requests": api_requests}
+        return destination, {**saved, "status": report["status"], "api_requests": api_requests}
     private_directory(destination)
     for draft in drafts:
         save_json(destination / (draft["record"]["id"] + ".json"), draft["record"])
@@ -124,7 +126,6 @@ def process(inputs, root=ROOT, live=False, transport=None, wait=False):
                   {key: value for key, value in draft.items() if key != "record"})
     (destination / "review.md").write_text(render_review(drafts, cases, destination), encoding="utf-8")
     (destination / "review.md").chmod(0o600)
-    report["status"] = "partial" if any(case["status"] not in ("pending_review", "no_event") for case in cases) else "success"
     save_json(destination / "manifest.json", report)
     return destination, report
 

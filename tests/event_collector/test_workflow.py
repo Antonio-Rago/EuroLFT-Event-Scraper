@@ -397,6 +397,54 @@ class ProductionIngestionTests(TemporaryRoot):
         process([record], self.root, True, transport)
         self.assertEqual(len(calls), 1)
 
+    def test_saved_jst_failure_recovers_without_rewriting_artifact_or_calling_model(self):
+        record, result = self.fixture()
+        quote = "Deadline: November 1, 2026, 23:59 JST (UTC+9)"
+        record["body"] += "\n" + quote
+        result["events"][0]["facts"]["deadlines"] = [{"kind": "abstract", "label": "Call for proposals",
+            "date": "2026-11-01", "time": "23:59", "timezone": "JST"}]
+        result["events"][0]["evidence"].append({"source_field": "body", "link_index": None,
+            "quote": quote, "supports": ["/facts/deadlines/0/timezone"], "derivation": None})
+        response = {"candidates": [{"finishReason": "STOP", "content": {"parts": [{"text": json.dumps(result)}]}}],
+                    "usageMetadata": {"promptTokenCount": 100, "candidatesTokenCount": 100}, "modelVersion": MODEL}
+        calls = []
+        def transport(request):
+            calls.append(request)
+            return response
+        bundle, report = process([record], self.root, True, transport)
+        self.assertEqual(report["status"], "success")
+        saved = next((self.root / "local/extraction/rejected").glob("*.json"))
+        original = saved.read_bytes()
+        quota = (self.root / "local/extraction/quota.json").read_bytes()
+        again, replay = process([record], self.root, True, transport)
+        self.assertEqual(again, bundle)
+        self.assertEqual(replay["api_requests"], 0)
+        self.assertEqual(replay["status"], "success")
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(saved.read_bytes(), original)
+        self.assertEqual((self.root / "local/extraction/quota.json").read_bytes(), quota)
+        draft = json.loads(next(p for p in bundle.glob("proposed-*.json") if not p.name.endswith(".review.json")).read_text())
+        self.assertEqual(draft["facts"]["deadlines"][0]["timezone"], "Asia/Tokyo")
+
+    def test_mixed_valid_and_invalid_candidates_report_partial_even_on_replay(self):
+        record, result = self.fixture()
+        invalid = copy.deepcopy(result["events"][0])
+        invalid["local_id"] = "e2"
+        invalid["facts"]["start_date"] = "2027-02-30"
+        result["events"].append(invalid)
+        response = {"candidates": [{"finishReason": "STOP", "content": {"parts": [{"text": json.dumps(result)}]}}],
+                    "usageMetadata": {"promptTokenCount": 100, "candidatesTokenCount": 100}, "modelVersion": MODEL}
+        bundle, report = process([record], self.root, True, lambda request: response)
+        self.assertEqual(report["candidate_count"], 1)
+        self.assertEqual(report["cases"][0]["status"], "pending_review")
+        self.assertTrue(report["cases"][0]["repairs"])
+        self.assertEqual(report["status"], "partial")
+        with patch("tools.event_collector.ingest.call_gemini") as model:
+            _, replay = process([record], self.root, True, lambda request: None)
+        model.assert_not_called()
+        self.assertEqual(replay["api_requests"], 0)
+        self.assertEqual(replay["status"], "partial")
+
     def test_only_selected_archive_month_is_used(self):
         for month in ("2026-09", "2026-10"):
             source = {"url": "https://list.iu.edu/sympa/arc/latticenews-l/" + month + "/msg00001.html",

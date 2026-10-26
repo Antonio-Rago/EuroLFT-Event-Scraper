@@ -15,7 +15,7 @@ from tools.event_collector.moderate import decide
 from tools.event_collector.reconcile import prepare as reconcile, reconcile_records
 from tools.event_collector.review_changes import prepare as changes
 from tools.event_collector.submit import BRANCH, git, inspect_package, main as submit_main, submit
-from tools.event_collector.weekly import combine, run
+from tools.event_collector.weekly import combine, main as weekly_main, run
 
 
 class FakeGitHub:
@@ -158,7 +158,7 @@ class WeeklyTests(WebsiteFixture):
         third = reconcile_records([record], canonical, again["identities"])
         self.assertEqual(third["routes"][0]["status"], "no_change")
 
-    def fixtures(self, extraction_status="success", collection_status="success"):
+    def fixtures(self, extraction_status="success", collection_status="success", inspire_status="success", cases=None):
         mail = candidate("proposed-mail")
         inspire = copy.deepcopy(mail)
         inspire["id"] = "proposed-inspire-123"
@@ -170,9 +170,9 @@ class WeeklyTests(WebsiteFixture):
         stack.enter_context(patch("tools.event_collector.weekly.collect", return_value={"status": collection_status}))
         stack.enter_context(patch("tools.event_collector.weekly.inputs_for_month", return_value=[]))
         stack.enter_context(patch("tools.event_collector.weekly.process", return_value=(mail_bundle,
-                                  {"status": extraction_status, "api_requests": 0, "cases": []})))
+                                  {"status": extraction_status, "api_requests": 0, "cases": cases or []})))
         stack.enter_context(patch("tools.event_collector.weekly.discover", return_value=(inspire_bundle,
-                                  {"status": "success", "candidate_count": 1})))
+                                  {"status": inspire_status, "candidate_count": 1})))
         return stack
 
     def test_two_sources_are_deduplicated_together_and_no_decision_is_approved(self):
@@ -185,17 +185,77 @@ class WeeklyTests(WebsiteFixture):
         self.assertEqual(len(record["sources"]), 2)
         self.assertFalse(list(self.records.glob("*.json")))
 
-    def test_partial_collection_or_quota_deferral_never_submits(self):
-        for collection, extraction in (("partial", "success"), ("success", "partial")):
-            with self.fixtures(extraction, collection), \
+    def test_partial_source_coverage_submits_valid_events_and_remains_visible(self):
+        issue = {"case_id": "announcement-needs-repair", "status": "facts_need_repair",
+                 "source_url": "https://example.org/announcement", "repairs": [{"failure_type": "ValueError"}]}
+        for collection, extraction, inspire in (("partial", "success", "success"),
+                ("success", "partial", "success"), ("success", "success", "partial")):
+            with self.fixtures(extraction, collection, inspire, [issue] if extraction == "partial" else []), \
                     patch("tools.event_collector.weekly.pending_review", return_value=None), \
                     patch("tools.event_collector.weekly.github_token", return_value="fixture-token"), \
                     patch("tools.event_collector.github_exclusions.closed_rejections", return_value={}), \
-                    patch("tools.event_collector.weekly.submit") as submission:
+                    patch("tools.event_collector.weekly.submit", return_value={"status": "proposal_pr_created", "pr": "fixture"}) as submission:
                 result = run(self.root, self.site, "2026-09", live=True, open_pr=True)
             self.assertEqual(result["status"], "partial")
-            submission.assert_not_called()
+            submission.assert_called_once()
+            self.assertEqual(result["submission_status"], "proposal_pr_created")
+            self.assertEqual(result["remote_writes"], 1)
+            self.assertFalse(result["coverage_complete"])
+            if extraction == "partial":
+                self.assertEqual(result["extraction_issues"], [issue])
             self.assertTrue(Path(result["package"]).exists())
+
+    def test_partial_bulk_run_keeps_pr_links_and_counts(self):
+        issue = {"case_id": "mixed-announcement", "status": "pending_review",
+                 "repairs": [{"local_id": "e2", "failure_type": "ValueError"}]}
+        with self.fixtures(extraction_status="partial", cases=[issue]), \
+                patch("tools.event_collector.weekly.github_token", return_value="fixture-token"), \
+                patch("tools.event_collector.github_exclusions.closed_rejections", return_value={}), \
+                patch("tools.event_collector.weekly.submit_all", return_value={"status": "proposal_prs_created",
+                    "created_count": 1, "prs": [{"pr": "fixture"}]}) as submission:
+            result = run(self.root, self.site, "2026-09", live=True, open_pr=True, all_events=True)
+        submission.assert_called_once()
+        self.assertEqual(result["status"], "partial")
+        self.assertEqual(result["submission_status"], "proposal_prs_created")
+        self.assertEqual(result["remote_writes"], 1)
+        self.assertEqual(result["prs"], [{"pr": "fixture"}])
+        self.assertEqual(result["extraction_issues"], [issue])
+
+    def test_partial_coverage_does_not_bypass_identity_review(self):
+        def unresolved(*args, **kwargs):
+            plan, routing, reused = reconcile(*args, **kwargs)
+            routing["routes"].append({"status": "identity_review"})
+            return plan, routing, reused
+        with self.fixtures(extraction_status="partial"), \
+                patch("tools.event_collector.weekly.github_token", return_value="fixture-token"), \
+                patch("tools.event_collector.github_exclusions.closed_rejections", return_value={}), \
+                patch("tools.event_collector.weekly.reconcile", side_effect=unresolved), \
+                patch("tools.event_collector.weekly.submit_all") as submission:
+            result = run(self.root, self.site, "2026-09", live=True, open_pr=True, all_events=True)
+        submission.assert_not_called()
+        self.assertEqual(result["status"], "identity_review_required")
+        self.assertEqual(result["submission_status"], "blocked_identity_review")
+        self.assertFalse(result["coverage_complete"])
+        self.assertEqual(result["remote_writes"], 0)
+
+    def test_partial_preparation_without_open_pr_does_not_submit(self):
+        with self.fixtures(extraction_status="partial"), \
+                patch("tools.event_collector.weekly.submit") as submission, \
+                patch("tools.event_collector.weekly.submit_all") as bulk:
+            result = run(self.root, self.site, "2026-09", live=True)
+        submission.assert_not_called()
+        bulk.assert_not_called()
+        self.assertEqual(result["status"], "partial")
+        self.assertEqual(result["submission_status"], "not_requested")
+        self.assertEqual(result["remote_writes"], 0)
+
+    def test_incomplete_cli_exit_does_not_hide_successful_submissions(self):
+        report = {"status": "partial", "submission_status": "proposal_prs_created", "remote_writes": 1,
+                  "prs": [{"pr": "fixture"}], "coverage_complete": False}
+        with patch("tools.event_collector.weekly.run", return_value=report), redirect_stdout(io.StringIO()) as output:
+            status = weekly_main([])
+        self.assertEqual(status, 1)
+        self.assertEqual(json.loads(output.getvalue()), report)
 
     def test_existing_review_stops_before_source_downloads_and_gemini(self):
         with patch("tools.event_collector.weekly.pending_review", return_value={"status": "awaiting_review", "pr": "fixture"}), \

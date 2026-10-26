@@ -103,16 +103,24 @@ def run(root=ROOT, site=None, month=None, month_window="current", live=False,
         plan, routing, _ = reconcile(combined, root, directory, github_exclusions=exclusions)
         package, manifest = changes(plan, root, directory)
         report.update(package=str(package), record_count=len(manifest["record_ids"]),
-                      identity_review_count=sum(route["status"] == "identity_review" for route in routing["routes"]))
+                      identity_review_count=sum(route["status"] == "identity_review" for route in routing["routes"]),
+                      extraction_review=str(bundle / "review.md"),
+                      extraction_issues=[case for case in extraction.get("cases", [])
+                                         if case["status"] not in ("pending_review", "no_event") or case.get("repairs")],
+                      submission_status="not_requested")
         complete = collection["status"] == extraction["status"] == inspire["status"] == "success"
-        if not complete:
-            # Preserve useful partial candidates locally; do not imply full source coverage in a PR.
-            report["status"] = "partial"
-        elif report["identity_review_count"]:
+        report["coverage_complete"] = complete
+        if report["identity_review_count"]:
             report["status"] = "identity_review_required"
+            report["submission_status"] = "blocked_identity_review" if open_pr else "not_requested"
         elif open_pr:
             report.update(submit_all(package, root) if all_events else submit(package, root, batch=batch))
+            report["submission_status"] = report["status"]
             report["remote_writes"] = report.get("created_count", int(report["status"] == "proposal_pr_created"))
+        if not complete and not report["identity_review_count"]:
+            # Each proposal is independently validated. Keep incomplete source
+            # coverage visible (including a nonzero CLI exit) after submission.
+            report["status"] = "partial"
         save_json(root / "local/weekly/latest.json", report)
         return report
 
