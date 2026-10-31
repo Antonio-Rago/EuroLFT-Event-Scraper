@@ -236,7 +236,7 @@ def reconcile_records(candidates, registry, identities, choices=None):
                 raise ValueError("Invalid duplicate redirect")
             event_id = targets[0]
     for candidate in sorted(candidates, key=lambda value: value["id"]):
-        strong, possible = [], []
+        strong, possible, specific = [], [], []
         related_ids = {remap.get(item["id"], item["id"]) for item in candidate["related_events"]}
         for event_id, existing in catalog.items():
             if event_id in related_ids or any(item["id"] == candidate["id"] for item in existing["related_events"]):
@@ -249,6 +249,19 @@ def reconcile_records(candidates, registry, identities, choices=None):
                 group = strong if strength == "strong" else possible
                 if target_id not in group:
                     group.append(target_id)
+                # An exact catalogue/event reference or source-and-title match
+                # identifies one entry on a page that advertises several events.
+                shared = set(candidate["identity_aliases"]) & set(existing["identity_aliases"])
+                exact_reference = any(value.startswith(("inspire:", "event:")) for value in shared)
+                exact_source = any(value.startswith("source-event:")
+                                   for value in aliases(candidate) & aliases(existing))
+                if strength == "strong" and (exact_reference or exact_source) and target_id not in specific:
+                    specific.append(target_id)
+        if len(specific) == 1:
+            # Keep all other matches visible but do not let a generic shared URL
+            # outweigh unique event-specific proof.
+            possible = list(dict.fromkeys(possible + [key for key in strong if key not in specific]))
+            strong = specific
         selected = choices.get(candidate["id"])
         if selected == "new" and any(catalog[key]["decision"]["status"] in ("rejected", "hidden") for key in strong):
             raise ValueError("A new identity cannot bypass an excluded strong match; restore the canonical record explicitly")
@@ -393,7 +406,7 @@ def prepare(bundle, root=ROOT, records_directory=None, choices=None, github_excl
             if value["record"]["decision"]["status"] not in ("pending", "draft"):
                 raise ValueError("Pending identity ledger cannot hold authoritative editorial decisions")
         plan_hash = input_hash({"candidates": candidates, "registry": registry, "choices": choices or {},
-                               "github_exclusions": github_exclusions, "version": 3})
+                               "github_exclusions": github_exclusions, "version": 4})
         destination = base / ("plan-" + plan_hash[:20])
         if destination.exists():
             saved = json.loads((destination / "plan.json").read_text())

@@ -104,20 +104,26 @@ def run(root=ROOT, site=None, month=None, month_window="current", live=False,
         package, manifest = changes(plan, root, directory)
         report.update(package=str(package), record_count=len(manifest["record_ids"]),
                       identity_review_count=sum(route["status"] == "identity_review" for route in routing["routes"]),
+                      identity_review=str(plan / "review.md"),
+                      identity_issues=[{"candidate_id": route["candidate_id"],
+                                        "title": route["incoming_record"]["facts"]["title"],
+                                        "possible_matches": route["possible_matches"]}
+                                       for route in routing["routes"] if route["status"] == "identity_review"],
                       extraction_review=str(bundle / "review.md"),
                       extraction_issues=[case for case in extraction.get("cases", [])
                                          if case["status"] not in ("pending_review", "no_event") or case.get("repairs")],
                       submission_status="not_requested")
         complete = collection["status"] == extraction["status"] == inspire["status"] == "success"
         report["coverage_complete"] = complete
-        if report["identity_review_count"]:
-            report["status"] = "identity_review_required"
-            report["submission_status"] = "blocked_identity_review" if open_pr else "not_requested"
-        elif open_pr:
+        if open_pr:
             report.update(submit_all(package, root) if all_events else submit(package, root, batch=batch))
             report["submission_status"] = report["status"]
             report["remote_writes"] = report.get("created_count", int(report["status"] == "proposal_pr_created"))
-        if not complete and not report["identity_review_count"]:
+        if report["identity_review_count"]:
+            # Unresolved identities were omitted from the package, so only those
+            # candidates remain held for review after submitting resolved records.
+            report["status"] = "identity_review_required"
+        elif not complete:
             # Each proposal is independently validated. Keep incomplete source
             # coverage visible (including a nonzero CLI exit) after submission.
             report["status"] = "partial"

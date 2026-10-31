@@ -8,6 +8,7 @@ import tempfile
 import unittest
 
 from tools.event_collector.extract import save_json
+from tools.event_collector.check_corpus import input_hash
 from tools.event_collector.extraction import ROOT
 from tools.event_collector.reconcile import match_strength, merge_record, prepare, reconcile_records
 
@@ -152,6 +153,56 @@ class ReconciliationTests(unittest.TestCase):
         self.assertEqual(len(result["records"]), 2)
         self.assertNotEqual(result["routes"][0]["event_id"], result["routes"][1]["event_id"])
 
+    def test_shared_page_replay_preserves_two_previously_allocated_identities(self):
+        first = record("first", title="Community meeting 2027", url="https://example.org/shared/2027",
+                       source="https://example.org/shared-announcement")
+        second = record("second", title="AI workshop 2027", start="2027-05-13",
+                        url=first["facts"]["official_url"], source=first["sources"][0]["url"])
+        second["related_events"] = [{"id": first["id"], "relation": "satellite_of"}]
+        allocated = reconcile_records([first, second], {}, {})
+        self.assertEqual(len(allocated["records"]), 2)
+        before = copy.deepcopy(allocated["identities"])
+        repeated = reconcile_records([first, second], {}, allocated["identities"])
+        self.assertFalse(any(r["status"] == "identity_review" for r in repeated["routes"]))
+        self.assertEqual({r["id"] for r in repeated["records"]}, {r["id"] for r in allocated["records"]})
+        self.assertEqual(len(repeated["records"]), 2)
+        for route in repeated["routes"]:
+            expected = first if route["candidate_id"] == first["id"] else second
+            self.assertEqual(before[route["event_id"]]["record"]["facts"]["title"], expected["facts"]["title"])
+
+    def test_unknown_event_on_shared_page_still_requires_identity_review(self):
+        first = record("first", title="First workshop 2027", url="https://example.org/shared/2027")
+        second = record("second", title="Second workshop 2027", url=first["facts"]["official_url"])
+        incoming = record("incoming", title="Another workshop 2027", url=first["facts"]["official_url"])
+        result = reconcile_records([incoming], {"first": first, "second": second}, {})
+        self.assertEqual(result["routes"][0]["status"], "identity_review")
+        self.assertFalse(result["records"])
+
+    def test_specific_excluded_event_is_not_restored_by_shared_page_match(self):
+        first = record("first", title="First workshop 2027", url="https://example.org/shared/2027",
+                       source="https://example.org/circular")
+        first["decision"].update(status="hidden", reason="Editor removal")
+        second = record("second", title="Second workshop 2027", url=first["facts"]["official_url"])
+        incoming = copy.deepcopy(first)
+        incoming.update(id="incoming")
+        incoming["decision"].update(status="pending", reason=None)
+        result = reconcile_records([incoming], {"first": first, "second": second}, {})
+        self.assertEqual(result["routes"][0]["status"], "excluded")
+        self.assertEqual(result["routes"][0]["event_id"], "first")
+        self.assertFalse(result["records"])
+        with self.assertRaisesRegex(ValueError, "bypass"):
+            reconcile_records([incoming], {"first": first, "second": second}, {}, {"incoming": "new"})
+
+    def test_conflicting_event_specific_proofs_are_not_resolved_automatically(self):
+        first = record("first", title="Catalogue workshop 2027")
+        first["identity_aliases"] = ["inspire:123"]
+        second = record("second", title="Circular workshop 2027", source="https://example.org/circular")
+        incoming = copy.deepcopy(second)
+        incoming.update(id="incoming", identity_aliases=["inspire:123"])
+        result = reconcile_records([incoming], {"first": first, "second": second}, {})
+        self.assertEqual(result["routes"][0]["status"], "identity_review")
+        self.assertFalse(result["records"])
+
     def test_yearless_reused_url_needs_review(self):
         first = record("first", title="Example workshop", start=None, url="https://example.org/events")
         second = record("second", title="Another workshop", start=None, url=first["facts"]["official_url"])
@@ -205,6 +256,18 @@ class ReconciliationStorageTests(unittest.TestCase):
         self.assertEqual(plan["api_requests"], 0)
         self.assertEqual(directory.stat().st_mode & 0o777, 0o700)
         self.assertEqual((directory / "plan.json").stat().st_mode & 0o777, 0o600)
+
+    def test_old_matching_plan_is_preserved_and_recomputed_after_fix(self):
+        legacy_hash = input_hash({"candidates": [self.candidate], "registry": {}, "choices": {},
+                                  "github_exclusions": {}, "version": 3})
+        legacy = self.root / "local/reconciliation" / ("plan-" + legacy_hash[:20])
+        save_json(legacy / "plan.json", {"plan_sha256": legacy_hash, "routes": [{"status": "identity_review"}]})
+        original = (legacy / "plan.json").read_bytes()
+        directory, plan, reused = prepare(self.bundle, self.root)
+        self.assertFalse(reused)
+        self.assertNotEqual(directory, legacy)
+        self.assertEqual(plan["routes"][0]["status"], "new")
+        self.assertEqual((legacy / "plan.json").read_bytes(), original)
 
     def test_registry_exclusion_overrides_earlier_pending_allocation(self):
         directory, plan, reused = prepare(self.bundle, self.root)

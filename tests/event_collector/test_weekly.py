@@ -221,22 +221,38 @@ class WeeklyTests(WebsiteFixture):
         self.assertEqual(result["prs"], [{"pr": "fixture"}])
         self.assertEqual(result["extraction_issues"], [issue])
 
-    def test_partial_coverage_does_not_bypass_identity_review(self):
-        def unresolved(*args, **kwargs):
-            plan, routing, reused = reconcile(*args, **kwargs)
-            routing["routes"].append({"status": "identity_review"})
-            return plan, routing, reused
-        with self.fixtures(extraction_status="partial"), \
-                patch("tools.event_collector.weekly.github_token", return_value="fixture-token"), \
-                patch("tools.event_collector.github_exclusions.closed_rejections", return_value={}), \
-                patch("tools.event_collector.weekly.reconcile", side_effect=unresolved), \
-                patch("tools.event_collector.weekly.submit_all") as submission:
-            result = run(self.root, self.site, "2026-09", live=True, open_pr=True, all_events=True)
-        submission.assert_not_called()
-        self.assertEqual(result["status"], "identity_review_required")
-        self.assertEqual(result["submission_status"], "blocked_identity_review")
-        self.assertFalse(result["coverage_complete"])
-        self.assertEqual(result["remote_writes"], 0)
+    def test_uncertain_identity_is_held_without_blocking_independent_records(self):
+        uncertain = candidate("proposed-uncertain")
+        uncertain["facts"].update(title="An ambiguous lattice workshop 2027", official_url=None)
+        for identity in ("event-duplicate-a", "event-duplicate-b"):
+            existing = copy.deepcopy(uncertain)
+            existing["id"] = identity
+            save_json(self.records / (identity + ".json"), existing)
+        def submit_resolved(package, root):
+            manifest = json.loads((package / "manifest.json").read_text())
+            self.assertEqual(len(manifest["record_ids"]), 1)
+            for path in (package / "changes/_data/community_events").glob("*.json"):
+                self.assertNotEqual(json.loads(path.read_text())["title"], uncertain["facts"]["title"])
+            return {"status": "proposal_prs_created", "created_count": 1, "prs": [{"pr": "fixture"}]}
+        for coverage in ("success", "partial"):
+            with self.subTest(coverage=coverage), self.fixtures(extraction_status=coverage), \
+                    patch("tools.event_collector.weekly.github_token", return_value="fixture-token"), \
+                    patch("tools.event_collector.github_exclusions.closed_rejections", return_value={}), \
+                    patch("tools.event_collector.weekly.submit_all", side_effect=submit_resolved) as submission:
+                directory = self.root / "local/mail"
+                save_json(directory / (uncertain["id"] + ".json"), uncertain)
+                manifest = json.loads((directory / "manifest.json").read_text())
+                manifest["candidates"].append({"id": uncertain["id"]})
+                save_json(directory / "manifest.json", manifest)
+                result = run(self.root, self.site, "2026-09", live=True, open_pr=True, all_events=True)
+            submission.assert_called_once()
+            self.assertEqual(result["identity_review_count"], 1)
+            self.assertEqual(result["status"], "identity_review_required")
+            self.assertEqual(result["submission_status"], "proposal_prs_created")
+            self.assertEqual(result["coverage_complete"], coverage == "success")
+            self.assertEqual(result["remote_writes"], 1)
+            self.assertEqual(result["identity_issues"][0]["title"], uncertain["facts"]["title"])
+            self.assertTrue(Path(result["identity_review"]).is_file())
 
     def test_partial_preparation_without_open_pr_does_not_submit(self):
         with self.fixtures(extraction_status="partial"), \

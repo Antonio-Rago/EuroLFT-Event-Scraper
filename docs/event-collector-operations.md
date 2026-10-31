@@ -105,8 +105,18 @@ unresolved announcement does not block other event PRs. The summary retains
 `status: partial`, `coverage_complete: false` and a nonzero exit code until coverage
 is complete. Check `submission_status`, `remote_writes` and the PR links to see what
 was submitted. `extraction_issues` lists announcements needing repair, and
-`extraction_review` points to the private detailed report. Identity conflicts still
-require resolution before submission. Existing 20-attempt daily and 60-second
+`extraction_review` points to the private detailed report. Candidates with unresolved
+identity matches remain held locally, while other validated records are submitted.
+Such a run retains `status: identity_review_required` and a nonzero exit code;
+`submission_status`, `remote_writes` and PR links show the independently submitted
+events. `identity_issues` lists the held candidates and possible matching IDs, and
+`identity_review` links to the private reconciliation report.
+
+When several events share an organiser page, a unique event/catalogue reference or
+exact source-and-title identity takes precedence over that generic shared URL.
+Conflicting event-specific proofs still require review; hidden/rejected event
+decisions remain enforced. Older matching plans are preserved and recalculated with
+the corrected rules. Existing 20-attempt daily and 60-second
 request-pacing limits remain. Rerun to reuse completed extraction.
 
 Saved model failures with parsed event facts are reconsidered locally without another
